@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+        <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6407E7E7-D48D-436B-8A4B-9E3621C275CD}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>XipeADNApp.iOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>XipeADNApp.iOS</AssemblyName>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>i386, x86_64</MtouchArch>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>i386, x86_64</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>ARM64</MtouchArch>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchArch>ARM64</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchArch>ARM64</MtouchArch>
+    <BuildIpa>True</BuildIpa>
+    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchArch>ARM64</MtouchArch>
+    <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+    <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <None Include="Entitlements.plist" />
+    <None Include="Info.plist" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ITunesArtwork Include="iTunesArtwork@1x.png" />
+    <ITunesArtwork Include="iTunesArtwork@2x.png" />
+    <ITunesArtwork Include="iTunesArtwork@3x.png" />
+    <Compile Include="Renderers\CustomMaterialButtonRenderer.cs" />
+    <Compile Include="Renderers\ExtendedEntryRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20@3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29@3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40@3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60@3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-72x72@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-72x72@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76@3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50@1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ItunesArtwork@2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default-568h@2x.png" />
+    <BundleResource Include="Resources\Default-Portrait.png" />
+    <BundleResource Include="Resources\Default-Portrait@2x.png" />
+    <BundleResource Include="Resources\Default.png" />
+    <BundleResource Include="Resources\Default@2x.png" />
+    <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+    <BundleResource Include="Resources\LoginBackground.png" />
+    <BundleResource Include="Resources\LoginBackground2.jpg" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-Black.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-BlackItalic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-Bold.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-BoldItalic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-ExtraBold.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-ExtraBoldItalic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-ExtraLight.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-ExtraLightItalic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-Italic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-Light.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-LightItalic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-Medium.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-MediumItalic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-Regular.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-SemiBold.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-SemiBoldItalic.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-Thin.otf" />
+    <BundleResource Include="Resources\fonts\MontserratAlternates-ThinItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-Black.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-BlackItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-Bold.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-BoldItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-ExtraBold.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-ExtraBoldItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-ExtraLight.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-ExtraLightItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-Italic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-Light.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-LightItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-Medium.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-MediumItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-Regular.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-SemiBold.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-SemiBoldItalic.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-Thin.otf" />
+    <BundleResource Include="Resources\fonts\Montserrat-ThinItalic.otf" />
+    <BundleResource Include="Resources\fonts\Rubik-Black.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-BlackItalic.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-Bold.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-BoldItalic.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-Italic.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-Light.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-LightItalic.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-Medium.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-MediumItalic.ttf" />
+    <BundleResource Include="Resources\fonts\Rubik-Regular.ttf" />
+    <BundleResource Include="Resources\CheckBoxOff.png" />
+    <BundleResource Include="Resources\CheckBoxOn.png" />
+    <BundleResource Include="Resources\HeaderBackIcon.png" />
+    <BundleResource Include="Resources\BalanceTabOff.png" />
+    <BundleResource Include="Resources\PaidTabOff.png" />
+    <BundleResource Include="Resources\ProfileTabOff.png" />
+    <BundleResource Include="Resources\Editar.png" />
+    <BundleResource Include="Resources\Master card.png" />
+    <BundleResource Include="Resources\Mi balance activo.png" />
+    <BundleResource Include="Resources\Mi balance inactivo.png" />
+    <BundleResource Include="Resources\Perfil actvio.png" />
+    <BundleResource Include="Resources\Perfil inactivo.png" />
+    <BundleResource Include="Resources\Question mark.png" />
+    <BundleResource Include="Resources\Visa.png" />
+    <BundleResource Include="Resources\LogOutIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.293080" />
+    <PackageReference Include="Prism.Unity.Forms" Version="7.1.0.431" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg">
+      <Version>2.4.4.859</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms">
+      <Version>2.4.4.859</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.Visual.Material">
+      <Version>3.6.0.293080</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XipeADNApp\XipeADNApp.csproj">
+      <Project>{87CAA282-7890-4EEB-BF2C-87070EE90610}</Project>
+      <Name>XipeADNApp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Renderers\" />
+    <Folder Include="Resources\fonts\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>

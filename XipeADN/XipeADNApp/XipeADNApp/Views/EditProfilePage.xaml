@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:Controls="clr-namespace:XipeADNApp.Controls;"
+	x:Class="XipeADNApp.Views.EditProfilePage"
+	Title="{Binding Title}" Visual="Material">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="170"/>
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid BackgroundColor="{StaticResource DarkBlueColor}" Padding="0, 30, 0, 0" Grid.Row="0" HorizontalOptions="FillAndExpand">
+            <ffimageloadingsvg:SvgCachedImage Margin="10, 15, 0, 15" Aspect="AspectFit" WidthRequest="40" HeightRequest="25"
+                HorizontalOptions="StartAndExpand" Source="HeaderBackIcon.png">
+                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+            </ffimageloadingsvg:SvgCachedImage>
+            <Label TextColor="{StaticResource WhiteColor}" FontSize="23" VerticalTextAlignment="Center" FontFamily="{StaticResource RubikRegular}" 
+                HorizontalOptions="CenterAndExpand"  HorizontalTextAlignment="Start">Editar información</Label>
+        </Grid>
+        <Grid Grid.Row="1" Padding="0, 10, 0, 0">
+            <StackLayout>
+                <ffimageloadingsvg:SvgCachedImage BackgroundColor="Gray" HeightRequest="120" VerticalOptions="Center"
+                    Source="Editar.png">
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="EditProfilePage" />
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+            <Label FontAttributes="Bold" FontFamily="{StaticResource RubikBold}" FontSize="18" HorizontalOptions="Center">Cambiar foto de perfil</Label>
+            </StackLayout>
+            <BoxView HeightRequest="1" Color="LightGray" VerticalOptions="End"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0, 15, 0, -15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Spacing="18" Padding="30, 0, 0, 0">
+                <Label FontAttributes="Bold" FontFamily="{StaticResource RubikBold}" TextColor="{StaticResource DarkBlueColor}">Datos personales</Label>
+                <Label FontFamily="{StaticResource RubikRegular}" TextColor="{StaticResource DarkGrayColor}">Nombre</Label>
+                <Label FontFamily="{StaticResource RubikRegular}" TextColor="{StaticResource DarkGrayColor}">Teléfono</Label>
+                <Label FontFamily="{StaticResource RubikRegular}" TextColor="{StaticResource DarkGrayColor}">Correo electrónico</Label>
+            </StackLayout>
+            <StackLayout Grid.Column="1" Spacing="20" Padding="0, 32, 25, 0">
+                <Controls:ExtendedEntry FontFamily="{StaticResource RubikRegular}"  PlaceholderColor="Gray" LineColor="Gray" BackgroundColor="Transparent"
+                Placeholder="Nombre *" TextColor="{StaticResource DarkGrayColor}" Text="{Binding Password.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+                <Controls:ExtendedEntry FontFamily="{StaticResource RubikRegular}" PlaceholderColor="Gray" LineColor="Gray" BackgroundColor="Transparent"
+                Placeholder="Teléfono *" TextColor="{StaticResource DarkGrayColor}"  Text="{Binding Password.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+                <Controls:ExtendedEntry FontFamily="{StaticResource RubikRegular}"  PlaceholderColor="Gray"  LineColor="Gray" BackgroundColor="Transparent"
+                Placeholder="Correo *" TextColor="{StaticResource DarkGrayColor}"  Text="{Binding Password.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+            </StackLayout>
+            <BoxView HeightRequest="1" Grid.ColumnSpan="2" Color="LightGray" VerticalOptions="End"/>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Spacing="18" Padding="30, 30, 0, 0">
+                <Label FontAttributes="Bold" FontFamily="{StaticResource RubikBold}" TextColor="{StaticResource DarkBlueColor}">Datos de la empresa</Label>
+                <Label FontFamily="{StaticResource RubikRegular}" TextColor="{StaticResource DarkGrayColor}">Empresa</Label>
+                <Label FontFamily="{StaticResource RubikRegular}" TextColor="{StaticResource DarkGrayColor}">Puesto de trabajo</Label>
+            </StackLayout>
+            <StackLayout Grid.Column="1" Spacing="20" Padding="0, 65, 25, 0">
+                <Controls:ExtendedEntry FontFamily="{StaticResource RubikRegular}" PlaceholderColor="Gray" LineColor="Gray" BackgroundColor="Transparent"
+                Placeholder="Empresa *" TextColor="{StaticResource DarkGrayColor}" Text="{Binding Password.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+                <Controls:ExtendedEntry FontFamily="{StaticResource RubikRegular}" PlaceholderColor="Gray" LineColor="Gray" BackgroundColor="Transparent"
+                Placeholder="Puesto *" TextColor="{StaticResource DarkGrayColor}"  Text="{Binding Password.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+            </StackLayout>
+            <BoxView HeightRequest="1" Grid.ColumnSpan="2"  Color="LightGray" VerticalOptions="End"/>
+        </Grid>
+        <Grid Grid.Row="4" Padding="30, 15, 0, 0">
+            <StackLayout>
+                <Label FontAttributes="Bold" FontFamily="{StaticResource RubikBold}" TextColor="{StaticResource DarkBlueColor}">Banco</Label>
+                <!-- LISTA AQUI -->
+                <ListView>
+                    <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label TextColor="Black">Text 1</Label>
+                                        <Label TextColor="Black">Text 2</Label>
+                                    </StackLayout>    
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                </ListView>
+                <Label  FontFamily="{StaticResource RubikRegular}" TextColor="{StaticResource DarkBlueColor}">Agregar nueva tarjeta</Label>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

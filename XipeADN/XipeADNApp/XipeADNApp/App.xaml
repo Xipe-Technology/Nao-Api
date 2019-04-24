@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+             x:Class="XipeADNApp.App">
+    <!-- Application resource dictionary -->
+	<Application.Resources>
+        <!-- Color -->
+        <Color x:Key="WhiteColor">#FFFFFF</Color>
+        <Color x:Key="PastelGreenColor">#BDE1BE</Color>
+        <Color x:Key="PastelRedColor">#ff6961</Color>
+        <Color x:Key="DarkGrayColor">#2D2D34</Color>
+        <Color x:Key="DarkBlueColor">#3A3A49</Color>
+        
+        <!-- Fonts -->
+        <OnPlatform x:Key="RubikLight" x:TypeArguments="x:String" iOS="Rubik-Light" Android="Rubik-Light.ttf#Rubik"/>
+        <OnPlatform x:Key="RubikRegular" x:TypeArguments="x:String" iOS="Rubik-Regular" Android="Rubik-Regular.ttf#Rubik"/>
+        <OnPlatform x:Key="RubikBold" x:TypeArguments="x:String" iOS="Rubik-Bold" Android="Rubik-Bold.ttf#Rubik"/>
+        <OnPlatform x:Key="MontserratHuge" x:TypeArguments="x:String" iOS="Montserrat-ExtraBold" Android="Montserrat-ExtraBold.otf#Montserrat"/>
+        
+	</Application.Resources>
+</prism:PrismApplication>

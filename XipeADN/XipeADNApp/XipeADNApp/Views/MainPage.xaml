@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="XipeADNApp.Views.MainPage"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    Title="{Binding Title}" Visual="Material">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ffimageloadingsvg:SvgCachedImage Grid.RowSpan="2" Grid.Row="0" Aspect="AspectFill" Source="LoginBackground.jpg" />
+        <StackLayout Orientation="Horizontal" Padding="20, 40,20, 0" Grid.Row="0" HorizontalOptions="FillAndExpand">
+            <Label TextColor="{StaticResource PastelGreenColor}" HorizontalOptions="StartAndExpand" FontFamily="{StaticResource MontserratHuge}" FontSize="30" Text="ADN"></Label>
+                <ffimageloadingsvg:SvgCachedImage VerticalOptions="EndAndExpand" WidthRequest="15" HeightRequest="90"
+                    HorizontalOptions="EndAndExpand" Source="HeaderBackIcon.png">
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="EditProfilePage" />
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+        </StackLayout>
+        <StackLayout Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Label TextColor="White" Text="PAGO MAIN PAGE works!" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

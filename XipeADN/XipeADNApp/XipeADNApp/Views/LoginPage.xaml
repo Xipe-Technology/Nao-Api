@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="XipeADNApp.Views.LoginPage"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:Controls="clr-namespace:XipeADNApp.Controls;"
+	Title="{Binding Title}" >
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ffimageloadingsvg:SvgCachedImage  Aspect="AspectFill" Source="LoginBackground.jpg" />
+	    <StackLayout HorizontalOptions="CenterAndExpand" Margin="0, 40, 0, 0" Padding="35, 180, 35, 0" VerticalOptions="FillAndExpand">
+            <Label TextColor="{StaticResource PastelGreenColor}" FontSize="60" HorizontalTextAlignment="Center"
+                FontFamily="{StaticResource MontserratHuge}" Text="ADN"></Label>
+            <Label TextColor="White" FontSize="30" Margin="0, 0, 0, 60" HorizontalTextAlignment="Center"
+                FontFamily="{StaticResource RubikRegular}"  Text="adelanto de nómina"></Label>
+            <Controls:ExtendedEntry FontSize="20" HeightRequest="35" PlaceholderColor="Gray" BackgroundColor="Transparent" LineColor="White"
+                Placeholder="Correo electrónico *" TextColor="White" x:Name="EmailEntry" Text="{Binding Email.Value, Mode=TwoWay}">
+                <Controls:ExtendedEntry.Keyboard>
+                    <Keyboard x:FactoryMethod="Create">
+                        <x:Arguments>
+                            <KeyboardFlags>None</KeyboardFlags>
+                        </x:Arguments>
+                    </Keyboard>
+                </Controls:ExtendedEntry.Keyboard>
+            </Controls:ExtendedEntry>
+            <Controls:ExtendedEntry FontSize="20" HeightRequest="35" PlaceholderColor="Gray" Margin="0, 30, 0, 0" LineColor="White" BackgroundColor="Transparent"
+                Placeholder="Contraseña *" TextColor="White" x:Name="PasswordEntry" IsPassword="true" Text="{Binding Password.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+            <Label FontFamily="{StaticResource RubikRegular}" HorizontalTextAlignment="End"
+                TextColor="White" Text="Olvidé mi contraseña"></Label>
+            <Button Margin="0, 70, 0, 0" BackgroundColor="{StaticResource PastelGreenColor}" HeightRequest="50" BorderRadius="25"
+                FontFamily="{StaticResource MontserratHuge}" Text="Iniciar sesión" Command="{Binding SignInCommand}"
+                Visual="Material"></Button>
+            <Label FontSize="14" HorizontalTextAlignment="End" FontFamily="{StaticResource RubikRegular}"
+                TextColor="White">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="¿No tienes una cuenta? "></Span>
+                        <Span Text="¡Regístrate!" TextDecorations="Underline">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="RegisterPage" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Margin="0, 0,0, 20" VerticalOptions="EndAndExpand" HorizontalTextAlignment="Center" FontFamily="{StaticResource RubikRegular}"
+                   TextColor="White" Text="Derechos reservados 2019"></Label>
+	    </StackLayout>
+    </Grid>
+</ContentPage>

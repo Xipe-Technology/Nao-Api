@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{384B8C2F-A311-41E3-B7F8-A0F14B631EEF}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>XipeADNApp.Droid</RootNamespace>
+    <AssemblyName>XipeADNApp.Android</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <JavaMaximumHeapSize />
+    <JavaOptions />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.293080" />
+    <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2.1" />
+    <PackageReference Include="Xamarin.Android.Support.v4" Version="27.0.2.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.CardView" Version="27.0.2.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2.1" />
+    <PackageReference Include="Prism.Unity.Forms" Version="7.1.0.431" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms">
+      <Version>2.4.4.859</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Svg">
+      <Version>2.4.4.859</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Assets\AboutAssets.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\CheckBoxOff.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\CheckBoxOn.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\LoginBackground.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\LoginBackground2.jpg" />
+    <AndroidResource Include="Resources\mipmap-hdpi\HeaderBackIcon.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Editar.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Master card.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Mi balance activo.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Mi balance inactivo.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Perfil actvio.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Perfil inactivo.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Question mark.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Visa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Tabbar.axml" />
+    <AndroidResource Include="Resources\layout\Toolbar.axml" />
+    <AndroidResource Include="Resources\values\styles.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XipeADNApp\XipeADNApp.csproj">
+      <Project>{87CAA282-7890-4EEB-BF2C-87070EE90610}</Project>
+      <Name>XipeADNApp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\MontserratAlternates-Black.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-BlackItalic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-Bold.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-BoldItalic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-ExtraBold.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-ExtraBoldItalic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-ExtraLight.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-ExtraLightItalic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-Italic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-Light.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-LightItalic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-Medium.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-MediumItalic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-Regular.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-SemiBold.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-SemiBoldItalic.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-Thin.otf" />
+    <AndroidAsset Include="Assets\MontserratAlternates-ThinItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-Black.otf" />
+    <AndroidAsset Include="Assets\Montserrat-BlackItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-Bold.otf" />
+    <AndroidAsset Include="Assets\Montserrat-BoldItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-ExtraBold.otf" />
+    <AndroidAsset Include="Assets\Montserrat-ExtraBoldItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-ExtraLight.otf" />
+    <AndroidAsset Include="Assets\Montserrat-ExtraLightItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-Italic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-Light.otf" />
+    <AndroidAsset Include="Assets\Montserrat-LightItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-Medium.otf" />
+    <AndroidAsset Include="Assets\Montserrat-MediumItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-Regular.otf" />
+    <AndroidAsset Include="Assets\Montserrat-SemiBold.otf" />
+    <AndroidAsset Include="Assets\Montserrat-SemiBoldItalic.otf" />
+    <AndroidAsset Include="Assets\Montserrat-Thin.otf" />
+    <AndroidAsset Include="Assets\Montserrat-ThinItalic.otf" />
+    <AndroidAsset Include="Assets\Rubik-Black.ttf" />
+    <AndroidAsset Include="Assets\Rubik-BlackItalic.ttf" />
+    <AndroidAsset Include="Assets\Rubik-Bold.ttf" />
+    <AndroidAsset Include="Assets\Rubik-BoldItalic.ttf" />
+    <AndroidAsset Include="Assets\Rubik-Italic.ttf" />
+    <AndroidAsset Include="Assets\Rubik-Light.ttf" />
+    <AndroidAsset Include="Assets\Rubik-LightItalic.ttf" />
+    <AndroidAsset Include="Assets\Rubik-Medium.ttf" />
+    <AndroidAsset Include="Assets\Rubik-MediumItalic.ttf" />
+    <AndroidAsset Include="Assets\Rubik-Regular.ttf" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+</Project>

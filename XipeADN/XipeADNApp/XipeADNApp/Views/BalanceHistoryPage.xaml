@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+	x:Class="XipeADNApp.Views.BalanceHistoryPage"
+	Title="{Binding Title}" Visual="Material">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid BackgroundColor="{StaticResource DarkBlueColor}" Padding="0, 30, 0, 0"  HorizontalOptions="FillAndExpand">
+            <!-- 
+                        <ffimageloadingsvg:SvgCachedImage Margin="10, 15, 0, 15" Aspect="AspectFit" WidthRequest="40" HeightRequest="25"
+                HorizontalOptions="StartAndExpand" Source="HeaderBackIcon.png">
+                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+            </ffimageloadingsvg:SvgCachedImage>
+            -->
+            <Label TextColor="{StaticResource WhiteColor}" FontSize="25" VerticalTextAlignment="Center" FontFamily="{StaticResource RubikRegular}" HorizontalOptions="CenterAndExpand"  HorizontalTextAlignment="Start">Balance</Label>
+        </Grid>        
+        <ContentView Padding="30, 25, 0, 0" Grid.Row="1">
+            <StackLayout Spacing="20">
+                <Label FontAttributes="Bold" FontSize="20" TextColor="{StaticResource DarkBlueColor}" FontFamily="{StaticResource RubikBold}">Balance actual</Label>
+                <Label FontAttributes="Bold" FontSize="32" TextColor="{StaticResource DarkGrayColor}" FontFamily="{StaticResource RubikBold}">4,000.00 MXN</Label>
+            </StackLayout>
+        </ContentView>
+        <ContentView Padding="30, 0, 0, 0" Grid.Row="2">
+            <StackLayout>
+                <Label FontAttributes="Bold" FontFamily="{StaticResource RubikBold}">Historial de adelantos de nómina</Label>
+                <StackLayout>
+                    <ListView Margin="20, 0, 50, 0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label TextColor="Black">Text 1</Label>
+                                        <Label TextColor="Black">Text 2</Label>
+                                    </StackLayout>    
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </StackLayout>
+        </ContentView>
+    </Grid>
+</ContentPage>

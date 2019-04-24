@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="XipeADNApp.Views.RegisterPage"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:Controls="clr-namespace:XipeADNApp.Controls;"
+	Title="{Binding Title}" Visual="Material">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ffimageloadingsvg:SvgCachedImage Grid.RowSpan="2" Grid.Row="0" Aspect="AspectFill" Source="LoginBackground.jpg" />
+        <ContentView Padding="30, 55, 0, 0" Grid.Row="0" VerticalOptions="FillAndExpand" >
+            <ffimageloadingsvg:SvgCachedImage Aspect="AspectFit" WidthRequest="20"
+                HorizontalOptions="StartAndExpand" Source="HeaderBackIcon.png">
+                <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+            </ffimageloadingsvg:SvgCachedImage>
+        </ContentView>
+        <StackLayout Padding="35, 0, 35, 0" Margin="0, 30, 0, 0" Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand">
+            <Label TextColor="{StaticResource PastelGreenColor}" FontSize="60" HorizontalTextAlignment="Center"
+                FontFamily="{StaticResource MontserratHuge}" Text="ADN"></Label>
+            <Label TextColor="White" FontSize="30" Margin="0, 0, 0, 45" HorizontalTextAlignment="Center"
+                FontFamily="{StaticResource RubikRegular}" Text="adelanto de nómina"></Label>
+            <Controls:ExtendedEntry TextColor="White" FontSize="20" HeightRequest="35" PlaceholderColor="Gray" BackgroundColor="Transparent" LineColor="White"
+                Placeholder="Correo electrónico *" x:Name="EmailEntry" Text="{Binding Email.Value, Mode=TwoWay}">
+                <Controls:ExtendedEntry.Keyboard>
+                    <Keyboard x:FactoryMethod="Create">
+                        <x:Arguments>
+                            <KeyboardFlags>None</KeyboardFlags>
+                        </x:Arguments>
+                    </Keyboard>
+                </Controls:ExtendedEntry.Keyboard>
+            </Controls:ExtendedEntry>
+            <Controls:ExtendedEntry TextColor="White" FontSize="20" HeightRequest="35" PlaceholderColor="Gray" Margin="0, 30, 0, 0" LineColor="White" BackgroundColor="Transparent"
+                Placeholder="Nombre completo *" x:Name="FullNameEntry" Text="{Binding FullName.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+            <Controls:ExtendedEntry TextColor="White" FontSize="20" HeightRequest="35" PlaceholderColor="Gray" Margin="0, 30, 0, 0" LineColor="White" BackgroundColor="Transparent"
+                Placeholder="Contraseña *" x:Name="PasswordEntry" IsPassword="true" Text="{Binding Password.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+            <Controls:ExtendedEntry TextColor="White" FontSize="20" HeightRequest="35" PlaceholderColor="Gray" Margin="0, 30, 0, 0" LineColor="White" BackgroundColor="Transparent"
+                Placeholder="Confirmar contraseña *" x:Name="PasswordConfirmEntry" IsPassword="true" Text="{Binding PasswordConfirm.Value, Mode=TwoWay}"></Controls:ExtendedEntry>
+            <StackLayout Padding="5, 30, 0, 0" Orientation="Horizontal">
+                <ffimageloadingsvg:SvgCachedImage WidthRequest="25" Source="{Binding CheckBoxImage}">
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleCheckBoxCommand}" />
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+                <Label TextColor="White" VerticalOptions="End">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Acepto "></Span>
+                            <!-- MODAL A TERMINOS Y CONDICIONES -->
+                            <Span Text="términos y condiciones" TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleCheckBoxCommand}" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+            <Button Margin="0, 30, 0, 0" BackgroundColor="#BDE1BE" HeightRequest="50" BorderRadius="25"
+                FontFamily="{StaticResource MontserratHuge}" Text="Registrarse" Command="{Binding RegisterCommand}"
+                Visual="Material"></Button>
+            <Label Margin="0, 0,0, 20" VerticalOptions="EndAndExpand" HorizontalTextAlignment="Center" FontFamily="{StaticResource RubikRegular}"
+                TextColor="White" Text="Derechos reservados 2019"></Label>
+        </StackLayout>
+    </Grid>
+</ContentPage>

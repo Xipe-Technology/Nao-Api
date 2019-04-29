@@ -21,8 +21,10 @@ namespace XipeADNWeb.Controllers
         private readonly IUserService _userService;
         private readonly XipeADNDbContext _db;
 
-        public AccountController(IUserService userService) =>
+        public AccountController(IUserService userService, XipeADNDbContext db) {
             _userService = userService;
+            _db = db;
+            }
 
         #region Account 
         [AllowAnonymous, HttpPost("authenticate")]
@@ -143,14 +145,14 @@ namespace XipeADNWeb.Controllers
         #region Oportunidades
 
         [HttpPost("CreateOpportunity")]
-        public async Task<IActionResult> CreateOpportunity(Opportunity model)
+        public async Task<IActionResult> CreateOpportunity([FromBody]Opportunity model)
         {
             try
             {
                 model.CreationDate = DateTime.Now;
                 model.LastUpdate = DateTime.Now;
 
-                //var id = HttpContext.User.Identity.Name;
+                var id = HttpContext.User.Identity.Name;
                 var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
 
                 if (user != null)

@@ -7,10 +7,8 @@ namespace XipeADNWeb.Models
     {
         [Required, EmailAddress]
         public string Email { get; set; }
-        public string FullName { get => string.IsNullOrEmpty(LastName) ? FirstName : $"{FirstName} {LastName}"; }
         [Required]
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Name { get; set; }
         [Required]
         public string Password { get; set; }
     }

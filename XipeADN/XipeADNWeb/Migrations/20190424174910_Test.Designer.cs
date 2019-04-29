@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XipeADNWeb.Data;
 
-namespace XipeADNWeb.Data.Migrations
+namespace XipeADNWeb.Migrations
 {
     [DbContext(typeof(XipeADNDbContext))]
-    [Migration("20190415185752_addedcompany")]
-    partial class addedcompany
+    [Migration("20190424174910_Test")]
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -142,9 +142,9 @@ namespace XipeADNWeb.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("Company");
+                    b.Property<string>("BannerPicUrl");
 
-                    b.Property<string>("CompanyRole");
+                    b.Property<string>("Company");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -156,17 +156,19 @@ namespace XipeADNWeb.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
-
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime>("LastEditDate");
+                    b.Property<string>("Job");
 
-                    b.Property<string>("LastName");
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Location");
 
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -179,6 +181,8 @@ namespace XipeADNWeb.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("ProfilePicUrl");
 
                     b.Property<string>("SecurityStamp");
 

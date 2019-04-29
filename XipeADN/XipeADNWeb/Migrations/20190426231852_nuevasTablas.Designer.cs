@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XipeADNWeb.Data;
 
-namespace XipeADNWeb.Data.Migrations
+namespace XipeADNWeb.Migrations
 {
     [DbContext(typeof(XipeADNDbContext))]
-    [Migration("20190422054047_addedpicurl")]
-    partial class addedpicurl
+    [Migration("20190426231852_nuevasTablas")]
+    partial class nuevasTablas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -135,6 +135,86 @@ namespace XipeADNWeb.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("XipeADNWeb.Entities.KPI", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<int?>("OpportunityId");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OpportunityId");
+
+                    b.ToTable("KPIs");
+                });
+
+            modelBuilder.Entity("XipeADNWeb.Entities.Lead", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Agent");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Leads");
+                });
+
+            modelBuilder.Entity("XipeADNWeb.Entities.Opportunity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Picture");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("UserId1")
+                        .IsRequired();
+
+                    b.Property<string>("Website");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Opportunities");
+                });
+
             modelBuilder.Entity("XipeADNWeb.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -142,9 +222,9 @@ namespace XipeADNWeb.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("Company");
+                    b.Property<string>("BannerPicUrl");
 
-                    b.Property<string>("CompanyRole");
+                    b.Property<string>("Company");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -156,17 +236,19 @@ namespace XipeADNWeb.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
-
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime>("LastEditDate");
+                    b.Property<string>("Job");
 
-                    b.Property<string>("LastName");
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Location");
 
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -244,6 +326,21 @@ namespace XipeADNWeb.Data.Migrations
                     b.HasOne("XipeADNWeb.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("XipeADNWeb.Entities.KPI", b =>
+                {
+                    b.HasOne("XipeADNWeb.Entities.Opportunity")
+                        .WithMany("KPIs")
+                        .HasForeignKey("OpportunityId");
+                });
+
+            modelBuilder.Entity("XipeADNWeb.Entities.Opportunity", b =>
+                {
+                    b.HasOne("XipeADNWeb.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

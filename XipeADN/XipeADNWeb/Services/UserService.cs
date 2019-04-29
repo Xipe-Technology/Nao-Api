@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using XipeADNWeb.Config;
 using XipeADNWeb.Entities;
 using XipeADNWeb.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace XipeADNWeb.Services
 {
@@ -50,14 +52,17 @@ namespace XipeADNWeb.Services
                 {
                     Token = jwt,
                     TokenExpiration = token.expirationDate,
-                    UserName = user.UserName,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    Name = user.Name,
                     Email = user.Email,
-                    Role = token.userRole,
+                    Phone = user.PhoneNumber,
+                    Job = user.Job,
+                    ProfilePicUrl = user.ProfilePicUrl,
+                    Location = user.Location,
+                    BannerPicUrl = user.ProfilePicUrl,
+                    Company = user.Company,
                     Id = user.Id,
                     CreationDate = user.CreationDate,
-                    LastEditDate = user.LastEditDate
+                    LastEditDate = user.LastUpdate
                 };
             }
             return null;
@@ -69,15 +74,27 @@ namespace XipeADNWeb.Services
             {
                 Email = model.Email,
                 UserName = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
+                Name = model.Name,
                 CreationDate = DateTime.UtcNow,
-                LastEditDate = DateTime.UtcNow,
-                EmailConfirmed = true
+                LastUpdate = DateTime.UtcNow,
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString()
             };
             var res = await _userManager.CreateAsync(entity, model.Password);
             var roleRes = await _userManager.AddToRoleAsync(entity, "Usuario");
             return res.Succeeded && roleRes.Succeeded;
+        }
+
+
+        public async Task<UserModel> ForgotPassword(string email)
+        {
+            // var user = await _activeUsers.(usr => usr.EmailConfirmed && String.Equals(usr.Email, email));
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                return null;
+            }
+            return null;
         }
 
 
@@ -103,13 +120,13 @@ namespace XipeADNWeb.Services
             if (entity == null)
                 return false;
             // entity.Email = model.Email;
-            entity.FirstName = model.FirstName ?? entity.FirstName;
-            entity.LastName = model.LastName ?? entity.LastName;
-            entity.LastEditDate = DateTime.UtcNow;
-            entity.PhoneNumber = model.Phone ?? entity.PhoneNumber;
-            entity.Company = model.Company ?? entity.Company;
-            entity.CompanyRole = model.CompanyRole ?? entity.CompanyRole;
-            entity.ProfilePicUrl = model.ProfilePictureUrl ?? entity.ProfilePicUrl;
+            //entity.FirstName = model.FirstName ?? entity.FirstName;
+            //entity.LastName = model.LastName ?? entity.LastName;
+            //entity.LastEditDate = DateTime.UtcNow;
+            //entity.PhoneNumber = model.Phone ?? entity.PhoneNumber;
+            //entity.Company = model.Company ?? entity.Company;
+            //entity.CompanyRole = model.CompanyRole ?? entity.CompanyRole;
+            //entity.ProfilePicUrl = model.ProfilePictureUrl ?? entity.ProfilePicUrl;
             var res = await _userManager.UpdateAsync(entity);
             return res.Succeeded;
         }

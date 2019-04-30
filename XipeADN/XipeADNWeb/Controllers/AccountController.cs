@@ -20,11 +20,15 @@ namespace XipeADNWeb.Controllers
     {
         private readonly IUserService _userService;
         private readonly XipeADNDbContext _db;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(IUserService userService, XipeADNDbContext db) {
+
+        public AccountController(IUserService userService, XipeADNDbContext db, UserManager<User> userManager)
+        {
             _userService = userService;
             _db = db;
-            }
+            _userManager = userManager;
+        }
 
         #region Account 
         [AllowAnonymous, HttpPost("authenticate")]
@@ -67,28 +71,52 @@ namespace XipeADNWeb.Controllers
 
 
         [AllowAnonymous, HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword([FromQuery]ResetPassword model)
+        public async Task<IActionResult> ForgotPassword([FromBody]ResetPassword model)
         {
             if (ModelState.IsValid)
             {
-
-                //var user = await UserManager.FindByEmailAsync(model.Email);
-                if (true)
+                var user = await _db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
+                if (user != null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
+
+                    //string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    //code = HttpUtility.UrlEncode(code);
+                    //var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
+                    //var sender = new EmailsService();
+                    //var ca_correo = "contacto@cruzazul.com";
+                    //sender.SendSimpleMessage(new Models.Email { Destination = ca_correo, Subject = "", Body = "" });
+
                     return Ok();
                 }
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                //string code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //code = HttpUtility.UrlEncode(code);
-                //var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
-                //var sender = new EmailsService();
-                // var ca_correo = "contacto@cruzazul.com";
-                //sender.SendSimpleMessage(new Models.Email { Destination = ca_correo, Subject = "", Body = "" });
+                else
+                {
+                    return BadRequest();
+                }
+
+
             }
-            // If we got this far, something failed, redisplay form
             return BadRequest();
         }
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody]ChangePassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
+                if (user != null)
+                {
+                    await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            return BadRequest();
+        }
+
 
 
         [HttpPost("edit")]
@@ -175,7 +203,7 @@ namespace XipeADNWeb.Controllers
 
 
         [HttpPost("DeleteOpportunity")]
-        public async Task<IActionResult> DeleteOportunity(Opportunity model)
+        public async Task<IActionResult> DeleteOpportunity([FromBody]Opportunity model)
         {
             try
             {
@@ -199,7 +227,7 @@ namespace XipeADNWeb.Controllers
         }
 
 
-        [HttpPost("GetOpportunities")]
+        [HttpGet("GetOpportunities")]
         public async Task<IActionResult> GetOpportunities()
         {
             try
@@ -215,7 +243,7 @@ namespace XipeADNWeb.Controllers
 
 
         [HttpPost("EditOpportunity")]
-        public async Task<IActionResult> EditOpportunity(Opportunity model)
+        public async Task<IActionResult> EditOpportunity([FromBody]Opportunity model)
         {
             try
             {

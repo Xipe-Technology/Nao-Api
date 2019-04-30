@@ -1,7 +1,7 @@
 ﻿using System;
 namespace XipeADNWeb.Models
 {
-    public class ResetPassword : Model<string>
+    public class ResetPassword
     {
         public string Email { get; set; }
 

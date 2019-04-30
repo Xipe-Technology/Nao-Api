@@ -126,7 +126,7 @@ namespace XipeADNWeb.Services
             //entity.PhoneNumber = model.Phone ?? entity.PhoneNumber;
             //entity.Company = model.Company ?? entity.Company;
             //entity.CompanyRole = model.CompanyRole ?? entity.CompanyRole;
-            //entity.ProfilePicUrl = model.ProfilePictureUrl ?? entity.ProfilePicUrl;
+            entity.ProfilePicUrl = model.ProfilePicUrl ?? entity.ProfilePicUrl;
             var res = await _userManager.UpdateAsync(entity);
             return res.Succeeded;
         }

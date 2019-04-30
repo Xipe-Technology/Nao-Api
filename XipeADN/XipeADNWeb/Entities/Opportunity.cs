@@ -11,7 +11,7 @@ namespace XipeADNWeb.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public string Website { get; set; }
-        public List<KPI> KPIs { get; set; }
+        public virtual List<KPI> KPIs { get; set; }
 
         public String UserId { get; set; }
         public User User { get; set; }

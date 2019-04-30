@@ -144,8 +144,9 @@ namespace XipeADNWeb.Controllers
             {
                 var writter = new ImageWriter();
                 var upload = await writter.UploadImage(file);
+                var path = Path.Combine("wwwroot\\images", upload);
                 //await _userService.EditProfile(new UserModel { ProfilePicUrl = upload });
-                return Ok(upload);
+                return Ok(path);
             }
             catch (Exception ex)
             {

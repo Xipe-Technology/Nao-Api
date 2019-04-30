@@ -107,7 +107,6 @@ namespace XipeADNWeb.Controllers
                 if (user != null)
                 {
                     await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-                    await _db.SaveChangesAsync();
                     return Ok();
                 }
                 else

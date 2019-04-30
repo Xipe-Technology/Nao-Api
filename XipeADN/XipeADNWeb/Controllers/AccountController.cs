@@ -232,7 +232,7 @@ namespace XipeADNWeb.Controllers
         {
             try
             {
-                var entities = await _db.Opportunities.Where(x => !x.IsDeleted).ToListAsync();
+                var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted).ToListAsync();
                 return Ok(entities);
             }
             catch (Exception ex)

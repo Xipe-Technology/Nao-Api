@@ -46,7 +46,8 @@ namespace XipeADNWeb.Services
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
             using (var bits = new FileStream(path, FileMode.Create))
                 await file.CopyToAsync(bits);
-            return fileName;
+            //return fileName; old
+            return path;
         }
     }
 }

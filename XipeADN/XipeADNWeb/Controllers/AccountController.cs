@@ -137,15 +137,15 @@ namespace XipeADNWeb.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("UploadImage")]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
             try
             {
                 var writter = new ImageWriter();
                 var upload = await writter.UploadImage(file);
-                await _userService.EditProfile(new UserModel { ProfilePicUrl = upload });
-                return Ok(new { ProfilePictureUrl = upload });
+                //await _userService.EditProfile(new UserModel { ProfilePicUrl = upload });
+                return Ok(upload);
             }
             catch (Exception ex)
             {

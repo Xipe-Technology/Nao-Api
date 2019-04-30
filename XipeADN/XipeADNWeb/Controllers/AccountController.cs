@@ -99,7 +99,7 @@ namespace XipeADNWeb.Controllers
         }
 
         [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ForgotPassword([FromBody]ChangePassword model)
+        public async Task<IActionResult> ChangePassword([FromBody]ChangePassword model)
         {
             if (ModelState.IsValid)
             {

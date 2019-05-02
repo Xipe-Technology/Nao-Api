@@ -135,12 +135,12 @@ namespace XipeADNWeb.Services
         #region Private
         private async Task<dynamic> GenerateTokenAsync(User user)
         {
-            string role = (await _userManager.GetRolesAsync(user))[0];
+            //string role = (await _userManager.GetRolesAsync(user))[0];
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.Name, user.Email),
                 //new Claim(ClaimTypes.Sid, user.SectionId.ToString()),
-                new Claim(ClaimTypes.Role, role)
+                //new Claim(ClaimTypes.Role, role)
             };
             // authentication successful so generate jwt token
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -154,7 +154,7 @@ namespace XipeADNWeb.Services
             {
                 value = _tokenHandler.CreateToken(tokenDescriptor),
                 expirationDate = tokenDescriptor.Expires ?? DateTime.UtcNow,
-                userRole = role
+                //userRole = role
             };
             return obj;
         }

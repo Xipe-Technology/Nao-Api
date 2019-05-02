@@ -144,8 +144,9 @@ namespace XipeADNWeb.Controllers
             {
                 var writter = new ImageWriter();
                 var upload = await writter.UploadImage(file);
-                var path = Path.Combine("wwwroot\\images", upload);
                 //await _userService.EditProfile(new UserModel { ProfilePicUrl = upload });
+                var path = Path.Combine("images", upload);
+                //return Ok(new { ProfilePictureUrl = upload });
                 return Ok(path);
             }
             catch (Exception ex)
@@ -229,11 +230,33 @@ namespace XipeADNWeb.Controllers
 
 
         [HttpGet("GetOpportunities")]
-        public async Task<IActionResult> GetOpportunities()
+        public async Task<IActionResult> GetOpportunities([FromQuery]string query)
         {
             try
             {
-                var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted).ToListAsync();
+                if (query != null)
+                {
+                    var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted && (x.Title.Contains(query) || x.Description.Contains(query))).ToListAsync();
+                    return Ok(entities);
+                }
+                else
+                {
+                    var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted).ToListAsync();
+                    return Ok(entities);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpGet("GetMyOpportunities")]
+        public async Task<IActionResult> GetMyOpportunities([FromQuery]string UserId)
+        {
+            try
+            {
+                var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted && x.UserId == UserId).ToListAsync();
                 return Ok(entities);
             }
             catch (Exception ex)
@@ -254,6 +277,7 @@ namespace XipeADNWeb.Controllers
 
                     entidad.Title = model.Title;
                     entidad.Website = model.Website;
+                    entidad.Picture = model.Picture;
                     entidad.Description = model.Description;
                     entidad.LastUpdate = DateTime.Now;
 
@@ -267,6 +291,48 @@ namespace XipeADNWeb.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
+        }
+
+        #endregion
+
+        #region Rank
+
+        [HttpGet("GetRanking")]
+        public async Task<IActionResult> GetRanking()
+        {
+            try
+            {
+                var users = await _db.Users.Where(x => !x.IsDeleted).Select(x =>
+                      new {
+                          x.Name,
+                          x.Naos,
+                      }
+                ).OrderByDescending(x => Convert.ToInt32(x.Naos)).ToListAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        #endregion
+
+        #region Chats
+
+        [HttpGet("GetChatsByIds")]
+        public async Task<IActionResult> GetChatsByIds(string User1, string User2)
+        {
+            try
+            {
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return Ok();
         }
 
         #endregion

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace XipeADNWeb.Entities
 {
@@ -11,6 +14,8 @@ namespace XipeADNWeb.Entities
         public string Location { get; set; }
         public string ProfilePicUrl { get; set; }
         public string BannerPicUrl { get; set; }
+        [JsonIgnore]
+        public virtual List<Opportunity> Opportunitiesc { get; set; }
 
         //nuevo
         public string LinkedIn { get; set; }
@@ -21,6 +26,14 @@ namespace XipeADNWeb.Entities
         public DateTime CreationDate { get; set; }
         public DateTime LastUpdate { get; set; }
         public bool IsDeleted { get; set; }
+
+        [NotMapped]
+        public Int32 Rank { get; set; }
+
+        [NotMapped]
+        public int? Opportunities { get => Opportunitiesc?.Count;}
+
+
     }
 }
 

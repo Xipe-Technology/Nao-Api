@@ -13,6 +13,7 @@ namespace XipeADNWeb.Data
         public DbSet<KPI> KPIs { get; set; }
         public DbSet<Opportunity> Opportunities { get; set; }
         public DbSet<Lead> Leads { get; set; }
+        public DbSet<Match> Matches { get; set; }
 
         public XipeADNDbContext(DbContextOptions<XipeADNDbContext> options)
             : base(options)

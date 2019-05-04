@@ -70,6 +70,8 @@ namespace XipeADNWeb
             services.AddDbContext<XipeADNDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("XipeADNMSSQL")));
 
+
+
             services.AddDefaultIdentity<User>(options =>
             {
                 options.User.RequireUniqueEmail = true;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -106,18 +107,23 @@ namespace XipeADNWeb.Controllers
                 var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
                 if (user != null)
                 {
-                    await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-                    return Ok();
+                    var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest("Invalid Credentials, please verify and try again.");
+                    }
                 }
                 else
                 {
                     return BadRequest();
                 }
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
-
-
 
         [HttpPost("edit")]
         public async Task<IActionResult> Edit([FromBody]UserModel model)
@@ -170,6 +176,7 @@ namespace XipeADNWeb.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
         }
+
         #endregion
 
         #region Oportunidades
@@ -203,7 +210,6 @@ namespace XipeADNWeb.Controllers
             }
         }
 
-
         [HttpPost("DeleteOpportunity")]
         public async Task<IActionResult> DeleteOpportunity([FromBody]Opportunity model)
         {
@@ -228,7 +234,6 @@ namespace XipeADNWeb.Controllers
             }
         }
 
-
         [HttpGet("GetOpportunities")]
         public async Task<IActionResult> GetOpportunities([FromQuery]string query)
         {
@@ -236,12 +241,12 @@ namespace XipeADNWeb.Controllers
             {
                 if (query != null)
                 {
-                    var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted && (x.Title.Contains(query) || x.Description.Contains(query))).ToListAsync();
+                    var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted && (x.Title.Contains(query) || x.Description.Contains(query))).ToListAsync();
                     return Ok(entities);
                 }
                 else
                 {
-                    var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted).ToListAsync();
+                    var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted).ToListAsync();
                     return Ok(entities);
                 }
             }
@@ -256,7 +261,7 @@ namespace XipeADNWeb.Controllers
         {
             try
             {
-                var entities = await _db.Opportunities.Include(f => f.KPIs).Where(x => !x.IsDeleted && x.UserId == UserId).ToListAsync();
+                var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted && x.UserId == UserId).ToListAsync();
                 return Ok(entities);
             }
             catch (Exception ex)
@@ -265,7 +270,6 @@ namespace XipeADNWeb.Controllers
             }
         }
 
-
         [HttpPost("EditOpportunity")]
         public async Task<IActionResult> EditOpportunity([FromBody]Opportunity model)
         {
@@ -273,15 +277,56 @@ namespace XipeADNWeb.Controllers
             {
                 if (model.Id > 0)
                 {
-                    var entidad = _db.Opportunities.FirstOrDefault(o => o.Id == model.Id);
+                    var entidad = _db.Opportunities.Include(f => f.KPIs).FirstOrDefault(o => o.Id == model.Id);
 
+                    if (!string.IsNullOrEmpty(model.Picture))
+                    {
+                        entidad.Picture = model.Picture;
+                    }
                     entidad.Title = model.Title;
                     entidad.Website = model.Website;
-                    entidad.Picture = model.Picture;
                     entidad.Description = model.Description;
                     entidad.LastUpdate = DateTime.Now;
 
-                    _db.Entry(entidad).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+
+                    //Vamos a editar unas cosillas :)
+                    var alreadyInDB = _db.KPIs.Where(x => x.OpportunityId == model.Id).ToList();
+                    var newToAdd = model.KPIs;
+                    var newToNotDelete = new List<KPI>();
+
+                    var martin = alreadyInDB.Where(x => !model.KPIs.Any(x2 => x2.Id == x.Id)).ToList();
+
+
+                    //foreach (var item in model.KPIs)
+                    //{
+                    //    if (item.Id != null)
+                    //        newToNotDelete.Add(alreadyInDB.FirstOrDefault(x => x.Id == item.Id));
+                    //    else
+                    //        newToNotDelete.Add(item);
+                    //}
+
+                    //var lista1 = newToNotDelete.Where(x => x.Id == null);
+                    //var lista2 = newToNotDelete.Where(x => x.Id != null);
+
+                    //Borramos los que ya no quieren
+                    foreach (var item in martin)
+                        item.IsDeleted = true;
+
+                    //foreach (var item in model.KPIs)
+                    //{
+                    //    if (string.IsNullOrEmpty(item.Id.ToString()))
+                    //    {
+                    //        _db.AddRange(item);
+                    //    }
+                    //    else
+                    //    {
+                    //        continue;
+                    //    }
+                    //}
+
+                    _db.AddRange(newToAdd.Where(x => x.Id == 0).ToList());
+
                     await _db.SaveChangesAsync();
                     return StatusCode(StatusCodes.Status200OK);
                 }
@@ -290,6 +335,23 @@ namespace XipeADNWeb.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpPost("DeleteKPIS")]
+        public async Task<IActionResult> DeleteKpis([FromBody]int KpiId)
+        {
+            if (string.IsNullOrEmpty(KpiId.ToString()))
+            {
+                var kpitodelete = await _db.KPIs.FirstOrDefaultAsync(x => x.Id == KpiId);
+                kpitodelete.IsDeleted = true;
+                _db.Entry(kpitodelete).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            else
+            {
+                return BadRequest("Kpi id not found");
             }
         }
 
@@ -303,12 +365,23 @@ namespace XipeADNWeb.Controllers
             try
             {
                 var users = await _db.Users.Where(x => !x.IsDeleted).Select(x =>
-                      new {
-                          x.Name,
-                          x.Naos,
+                      new User
+                      {
+                          Name = x.Name,
+                          Naos = x.Naos,
+                          ProfilePicUrl = x.ProfilePicUrl,
+
                       }
-                ).OrderByDescending(x => Convert.ToInt32(x.Naos)).ToListAsync();
-                return Ok(users);
+                ).ToListAsync();
+
+                var listaordenada = users.OrderByDescending(x => Convert.ToInt32(x.Naos)).ToList();
+                var position = 1;
+                foreach (var item in listaordenada)
+                {
+                    item.Rank = position++;
+                }
+
+                return Ok(listaordenada);
             }
             catch (Exception ex)
             {
@@ -325,7 +398,7 @@ namespace XipeADNWeb.Controllers
         {
             try
             {
-                
+
             }
             catch (Exception)
             {

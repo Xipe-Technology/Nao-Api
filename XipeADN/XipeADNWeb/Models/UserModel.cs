@@ -1,4 +1,5 @@
 ﻿using System;
+using XipeADNWeb.Entities;
 namespace XipeADNWeb.Models
 {
     public class UserModel : Model<string>

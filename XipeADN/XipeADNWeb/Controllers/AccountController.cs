@@ -334,20 +334,28 @@ namespace XipeADNWeb.Controllers
         {
             try
             {
-                model.CreationDate = DateTime.Now;
-                model.LastUpdate = DateTime.Now;
-
-                var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
-                var opp = await _db.Opportunities.FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
-
-                if (user != null && opp != null)
+                if (_db.Matches.Where(x => x.OpportunityId == model.OpportunityId && x.UserId == model.UserId).Count() == 0)
                 {
-                    _db.Matches.Add(model);
-                    await _db.SaveChangesAsync();
+                    model.CreationDate = DateTime.Now;
+                    model.LastUpdate = DateTime.Now;
 
-                    return StatusCode(StatusCodes.Status200OK);
+                    var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
+                    var opp = await _db.Opportunities.FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
+
+                    if (user != null && opp != null)
+                    {
+                        _db.Matches.Add(model);
+                        await _db.SaveChangesAsync();
+
+                        return StatusCode(StatusCodes.Status200OK);
+                    }
+                    return BadRequest(ModelState);
                 }
-                return BadRequest(ModelState);
+                else
+                {
+                    return BadRequest("You’ve already sent a match to this opportunity and user.");
+                }
+                
             }
             catch (Exception ex)
             {

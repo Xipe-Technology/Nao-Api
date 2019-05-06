@@ -359,19 +359,24 @@ namespace XipeADNWeb.Controllers
         public async Task<IActionResult> GetSentMatches([FromQuery]string UserId)
         {
             var sentMatches = await _db.Matches.Where(x => x.UserId == UserId).ToListAsync();
+            List<Match> newList = new List<Match>();
 
             foreach (var item in sentMatches)
             {
-                item.Opportunity = _db.Opportunities.FirstOrDefault(x => x.Id == item.OpportunityId);
-                item.User = _db.Users.FirstOrDefault(x => x.Id == item.UserId);
+                if (!newList.Select(x=>x.OpportunityId).Contains(item.OpportunityId))
+                {
+                    newList.Add(item);
+                    item.Opportunity = _db.Opportunities.FirstOrDefault(x => x.Id == item.OpportunityId);
+                    item.User = _db.Users.FirstOrDefault(x => x.Id == item.UserId);
+                }
             }
-            return Ok(sentMatches);
+            return Ok(newList);
         }
 
         [HttpGet("GetMatches")]
         public async Task<IActionResult> GetMatches([FromQuery]string UserId1)
         {
-            var user1opp = await _db.Opportunities.Where(x => x.UserId == UserId1).ToListAsync();
+            var user1opp = await _db.Opportunities.Where(x => !x.IsDeleted && x.UserId == UserId1).ToListAsync();
 
             List<Match> myMatches = new List<Match>();
             foreach (var item in user1opp)

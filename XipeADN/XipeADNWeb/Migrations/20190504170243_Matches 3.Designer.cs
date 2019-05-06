@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XipeADNWeb.Data;
 
 namespace XipeADNWeb.Migrations
 {
     [DbContext(typeof(XipeADNDbContext))]
-    partial class XipeADNDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190504170243_Matches 3")]
+    partial class Matches3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,14 +248,10 @@ namespace XipeADNWeb.Migrations
 
                     b.Property<string>("BannerPicUrl");
 
-                    b.Property<string>("CallNumber");
-
                     b.Property<string>("Company");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
-
-                    b.Property<string>("CountryCode");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -295,10 +293,6 @@ namespace XipeADNWeb.Migrations
                     b.Property<string>("ProfilePicUrl");
 
                     b.Property<string>("SecurityStamp");
-
-                    b.Property<string>("Token");
-
-                    b.Property<string>("TokenExpiration");
 
                     b.Property<string>("Twitter");
 
@@ -381,7 +375,7 @@ namespace XipeADNWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("XipeADNWeb.Entities.User", "User")
-                        .WithMany("Matchesc")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

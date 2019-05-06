@@ -189,7 +189,7 @@ namespace XipeADNWeb.Controllers
                 model.CreationDate = DateTime.Now;
                 model.LastUpdate = DateTime.Now;
 
-                var id = HttpContext.User.Identity.Name;
+                //var id = HttpContext.User.Identity.Name;
                 var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
 
                 if (user != null)
@@ -242,11 +242,14 @@ namespace XipeADNWeb.Controllers
                 if (query != null)
                 {
                     var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted && (x.Title.Contains(query) || x.Description.Contains(query))).ToListAsync();
+                    entities = entities.Select(x => { x.KPIs = x.KPIs.Where(y => !y.IsDeleted).ToList(); return x; }).ToList();
+
                     return Ok(entities);
                 }
                 else
                 {
                     var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted).ToListAsync();
+                    entities = entities.Select(x => { x.KPIs = x.KPIs.Where(y => !y.IsDeleted).ToList(); return x; }).ToList();
                     return Ok(entities);
                 }
             }
@@ -262,6 +265,7 @@ namespace XipeADNWeb.Controllers
             try
             {
                 var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted && x.UserId == UserId).ToListAsync();
+                entities = entities.Select(x => { x.KPIs = x.KPIs.Where(y => !y.IsDeleted).ToList(); return x; }).ToList();
                 return Ok(entities);
             }
             catch (Exception ex)
@@ -288,43 +292,30 @@ namespace XipeADNWeb.Controllers
                     entidad.Description = model.Description;
                     entidad.LastUpdate = DateTime.Now;
 
-
-
                     //Vamos a editar unas cosillas :)
                     var alreadyInDB = _db.KPIs.Where(x => x.OpportunityId == model.Id).ToList();
                     var newToAdd = model.KPIs;
-                    var newToNotDelete = new List<KPI>();
 
                     var martin = alreadyInDB.Where(x => !model.KPIs.Any(x2 => x2.Id == x.Id)).ToList();
-
-
-                    //foreach (var item in model.KPIs)
-                    //{
-                    //    if (item.Id != null)
-                    //        newToNotDelete.Add(alreadyInDB.FirstOrDefault(x => x.Id == item.Id));
-                    //    else
-                    //        newToNotDelete.Add(item);
-                    //}
-
-                    //var lista1 = newToNotDelete.Where(x => x.Id == null);
-                    //var lista2 = newToNotDelete.Where(x => x.Id != null);
 
                     //Borramos los que ya no quieren
                     foreach (var item in martin)
                         item.IsDeleted = true;
 
-                    //foreach (var item in model.KPIs)
-                    //{
-                    //    if (string.IsNullOrEmpty(item.Id.ToString()))
-                    //    {
-                    //        _db.AddRange(item);
-                    //    }
-                    //    else
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
-
+                    foreach (var item in newToAdd)
+                    {
+                        if (item.Id == 0)
+                        {
+                            item.OpportunityId = model.Id;
+                            item.CreationDate = DateTime.Now;
+                            item.LastUpdate = DateTime.Now;
+                            item.IsDeleted = false;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
                     _db.AddRange(newToAdd.Where(x => x.Id == 0).ToList());
 
                     await _db.SaveChangesAsync();
@@ -338,23 +329,58 @@ namespace XipeADNWeb.Controllers
             }
         }
 
-        [HttpPost("DeleteKPIS")]
-        public async Task<IActionResult> DeleteKpis([FromBody]int KpiId)
+        [HttpPost("SaveMatch")]
+        public async Task<IActionResult> SaveMatch([FromBody]Match model )
         {
-            if (string.IsNullOrEmpty(KpiId.ToString()))
+            try
             {
-                var kpitodelete = await _db.KPIs.FirstOrDefaultAsync(x => x.Id == KpiId);
-                kpitodelete.IsDeleted = true;
-                _db.Entry(kpitodelete).State = EntityState.Modified;
-                await _db.SaveChangesAsync();
-                return StatusCode(StatusCodes.Status200OK);
+                model.CreationDate = DateTime.Now;
+                model.LastUpdate = DateTime.Now;
+
+                var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
+                var opp = await _db.Opportunities.FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
+
+                if (user != null && opp != null)
+                {
+                    _db.Matches.Add(model);
+                    await _db.SaveChangesAsync();
+
+                    return StatusCode(StatusCodes.Status200OK);
+                }
+                return BadRequest(ModelState);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Kpi id not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
         }
 
+        [HttpGet("GetSentMatches")]
+        public async Task<IActionResult> GetSentMatches([FromQuery]string UserId)
+        {
+            var sentMatches = await _db.Matches.Where(x => x.UserId == UserId).ToListAsync();
+
+            foreach (var item in sentMatches)
+            {
+                item.Opportunity = _db.Opportunities.FirstOrDefault(x => x.Id == item.OpportunityId);
+                item.User = _db.Users.FirstOrDefault(x => x.Id == item.UserId);
+            }
+            return Ok(sentMatches);
+        }
+
+        [HttpGet("GetMatches")]
+        public async Task<IActionResult> GetMatches([FromQuery]string UserId1)
+        {
+            var user1opp = await _db.Opportunities.Where(x => x.UserId == UserId1).ToListAsync();
+
+            List<Match> myMatches = new List<Match>();
+            foreach (var item in user1opp)
+            {
+                myMatches.AddRange(_db.Matches.Include(u => u.User).Where(x => !x.IsDeleted && x.OpportunityId == item.Id).ToList());
+            }
+
+            return Ok(myMatches);
+        }
         #endregion
 
         #region Rank
@@ -368,13 +394,13 @@ namespace XipeADNWeb.Controllers
                       new User
                       {
                           Name = x.Name,
-                          Naos = x.Naos,
+                          Naos = x.Naos ?? "0",
                           ProfilePicUrl = x.ProfilePicUrl,
 
                       }
                 ).ToListAsync();
 
-                var listaordenada = users.OrderByDescending(x => Convert.ToInt32(x.Naos)).ToList();
+                var listaordenada = users.OrderByDescending(x => Convert.ToInt64(x.Naos)).ToList();
                 var position = 1;
                 foreach (var item in listaordenada)
                 {

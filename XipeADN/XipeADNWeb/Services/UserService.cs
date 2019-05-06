@@ -62,7 +62,11 @@ namespace XipeADNWeb.Services
                     Company = user.Company,
                     Id = user.Id,
                     CreationDate = user.CreationDate,
-                    LastEditDate = user.LastUpdate
+                    LastEditDate = user.LastUpdate,
+                    Matches = user.Matches,
+                    Opportunities = user.Opportunities,
+                    Naos = user.Naos
+
                 };
             }
             return null;

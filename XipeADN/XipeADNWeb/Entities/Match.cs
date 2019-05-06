@@ -8,7 +8,9 @@ namespace XipeADNWeb.Entities
     public class Match
     {
         public int Id { get; set; }
-        User User { get; set; }
+
+        public String UserId { get; set; }
+        public User User { get; set; }
 
         public Int32 OpportunityId { get; set; }
         public virtual Opportunity Opportunity { get; set; }

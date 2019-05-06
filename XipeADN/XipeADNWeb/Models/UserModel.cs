@@ -13,6 +13,18 @@ namespace XipeADNWeb.Models
         public string Location { get; set; }
         public string Phone { get; set; }
 
+        //new
+        public string CountryCode { get; set; }
+        public string CallNumber { get; set; }
+        public string PhoneNumber { get; set; }
+        public string LinkedIn { get; set; }
+        public string Twitter { get; set; }
+        public string About { get; set; }
+        public string Naos { get; set; }
+        public string Rank { get; set; }
+        public int? Opportunities { get; set; }
+        public int? Matches { get; set; }
+
         public string ProfilePicUrl { get; set; }
         public string BannerPicUrl { get; set; }
 

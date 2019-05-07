@@ -69,7 +69,8 @@ namespace XipeADNWeb.Services
                     Twitter = user.Twitter,
                     LinkedIn = user.LinkedIn,
                     About = user.About,
-                    CountryCode = user.CountryCode
+                    CountryCode = user.CountryCode,
+                    CallNumber = user.CallNumber
                 };
             }
             return null;

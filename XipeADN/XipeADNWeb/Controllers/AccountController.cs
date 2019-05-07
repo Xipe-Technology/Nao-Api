@@ -373,7 +373,7 @@ namespace XipeADNWeb.Controllers
             {
                 if (!newList.Select(x=>x.OpportunityId).Contains(item.OpportunityId))
                 {
-                    item.Opportunity = _db.Opportunities.FirstOrDefault(x => x.Id == item.OpportunityId);
+                    item.Opportunity = _db.Opportunities.Include(u=>u.User).FirstOrDefault(x => x.Id == item.OpportunityId);
                     item.User = _db.Users.FirstOrDefault(x => x.Id == item.UserId);
                     newList.Add(item);
                 }
@@ -384,7 +384,7 @@ namespace XipeADNWeb.Controllers
         [HttpGet("GetMatches")]
         public async Task<IActionResult> GetMatches([FromQuery]string UserId1)
         {
-            var user1opp = await _db.Opportunities.Where(x => !x.IsDeleted && x.UserId == UserId1).ToListAsync();
+            var user1opp = await _db.Opportunities.Include(u=>u.User).Where(x => !x.IsDeleted && x.UserId == UserId1).ToListAsync();
 
             List<Match> myMatches = new List<Match>();
             foreach (var item in user1opp)

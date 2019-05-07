@@ -65,8 +65,11 @@ namespace XipeADNWeb.Services
                     LastEditDate = user.LastUpdate,
                     Matches = user.Matches,
                     Opportunities = user.Opportunities,
-                    Naos = user.Naos
-
+                    Naos = user.Naos,
+                    Twitter = user.Twitter,
+                    LinkedIn = user.LinkedIn,
+                    About = user.About,
+                    CountryCode = user.CountryCode
                 };
             }
             return null;

@@ -125,8 +125,8 @@ namespace XipeADNWeb.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPost("edit")]
-        public async Task<IActionResult> Edit([FromBody]UserModel model)
+        [HttpPost("EditProfile")]
+        public async Task<IActionResult> EditProfile([FromBody]UserModel model)
         {
             try
             {

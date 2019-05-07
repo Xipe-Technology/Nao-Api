@@ -123,13 +123,17 @@ namespace XipeADNWeb.Services
             var entity = await _userManager.FindByEmailAsync(model.Email);
             if (entity == null)
                 return false;
+            entity.Company = model.Company ?? entity.Company;
+            entity.Job = model.Job ?? entity.Job;
+            entity.CountryCode = model.CountryCode ?? entity.CountryCode;
+            entity.PhoneNumber = model.PhoneNumber ?? entity.PhoneNumber;
+            entity.About = model.About ?? entity.About;
+            entity.LinkedIn = model.LinkedIn ?? entity.LinkedIn;
+            entity.Twitter = model.Twitter ?? entity.Twitter;
+            entity.LastUpdate = DateTime.UtcNow;
             // entity.Email = model.Email;
-            //entity.FirstName = model.FirstName ?? entity.FirstName;
-            //entity.LastName = model.LastName ?? entity.LastName;
-            //entity.LastEditDate = DateTime.UtcNow;
-            //entity.PhoneNumber = model.Phone ?? entity.PhoneNumber;
-            //entity.Company = model.Company ?? entity.Company;
-            //entity.CompanyRole = model.CompanyRole ?? entity.CompanyRole;
+            // entity.Name = model.Name ?? entity.Name;
+            // entity.CompanyRole = model.CompanyRole ?? entity.CompanyRole;
             entity.ProfilePicUrl = model.ProfilePicUrl ?? entity.ProfilePicUrl;
             var res = await _userManager.UpdateAsync(entity);
             return res.Succeeded;

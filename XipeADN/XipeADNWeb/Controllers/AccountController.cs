@@ -373,9 +373,9 @@ namespace XipeADNWeb.Controllers
             {
                 if (!newList.Select(x=>x.OpportunityId).Contains(item.OpportunityId))
                 {
-                    newList.Add(item);
                     item.Opportunity = _db.Opportunities.FirstOrDefault(x => x.Id == item.OpportunityId);
                     item.User = _db.Users.FirstOrDefault(x => x.Id == item.UserId);
+                    newList.Add(item);
                 }
             }
             return Ok(newList);

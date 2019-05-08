@@ -433,15 +433,27 @@ namespace XipeADNWeb.Controllers
         #region Chats
 
         [HttpPost("StartChat")]
-        public async Task<IActionResult> StartChat([FromBody]Chat model)
+        public async Task<IActionResult> StartChat([FromQuery]string User1Id, string User2Id)
         {
             try
-            {                
+            {         
+
+                if (string.IsNullOrEmpty(User1Id) || string.IsNullOrEmpty(User1Id))
+                {
+                    return BadRequest("We couldn't find the desired user, please try again later");
+                }
+
+                var model = new Chat();
+                model.User1 = await _db.Users.FirstOrDefaultAsync(x => x.Id == User1Id);
+                model.User1Id = User1Id;
+                model.User2 = await _db.Users.FirstOrDefaultAsync(x => x.Id == User2Id);
+                model.User2Id = User2Id;
+
                 if (model.User1 != null && model.User2 != null)
                 {
                     var alreadyInDB = await _db.Chat.FirstOrDefaultAsync(x => x.User1Id == model.User1Id && x.User2Id == model.User2Id);
-
-                    if (alreadyInDB != null)
+                    //Not in DB so we can create the chat
+                    if (alreadyInDB == null)
                     {
                         model.CreationDate = DateTime.UtcNow;
                         model.LastUpdate = DateTime.UtcNow;

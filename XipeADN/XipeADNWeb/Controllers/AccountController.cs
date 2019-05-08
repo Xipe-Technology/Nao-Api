@@ -436,12 +436,11 @@ namespace XipeADNWeb.Controllers
         public async Task<IActionResult> StartChat([FromBody]Chat model)
         {
             try
-            {
-                var User1 = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.User1.Id);
-                var User2 = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.User2.Id);
-                
-                if (User1 != null && User2 != null)
+            {                
+                if (model.User1 != null && model.User2 != null)
                 {
+                    model.CreationDate = DateTime.UtcNow;
+                    model.LastUpdate = DateTime.UtcNow;
                     _db.Chat.Add(model);
                     await _db.SaveChangesAsync();
                     return StatusCode(StatusCodes.Status200OK);

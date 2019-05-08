@@ -432,6 +432,28 @@ namespace XipeADNWeb.Controllers
 
         #region Chats
 
+        [HttpPost("StartChat")]
+        public async Task<IActionResult> StartChat([FromBody]Chat model)
+        {
+            try
+            {
+                var User1 = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.User1.Id);
+                var User2 = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.User2.Id);
+                
+                if (User1 != null && User2 != null)
+                {
+                    _db.Chat.Add(model);
+                    await _db.SaveChangesAsync();
+                    return StatusCode(StatusCodes.Status200OK);
+                }
+                return BadRequest("An error has occured while creating a new chat, please try again later");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
         [HttpGet("GetChatsByIds")]
         public async Task<IActionResult> GetChatsByIds(string User1, string User2)
         {

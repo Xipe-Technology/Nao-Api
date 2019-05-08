@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XipeADNWeb.Data;
 
 namespace XipeADNWeb.Migrations
 {
     [DbContext(typeof(XipeADNDbContext))]
-    partial class XipeADNDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190507194655_ChatAndMessagesEntities")]
+    partial class ChatAndMessagesEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,12 +139,6 @@ namespace XipeADNWeb.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdate");
 
                     b.Property<string>("User1Id");
 

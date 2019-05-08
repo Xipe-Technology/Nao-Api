@@ -439,11 +439,18 @@ namespace XipeADNWeb.Controllers
             {                
                 if (model.User1 != null && model.User2 != null)
                 {
-                    model.CreationDate = DateTime.UtcNow;
-                    model.LastUpdate = DateTime.UtcNow;
-                    _db.Chat.Add(model);
-                    await _db.SaveChangesAsync();
-                    return StatusCode(StatusCodes.Status200OK);
+                    var alreadyInDB = await _db.Chat.FirstOrDefaultAsync(x => x.User1Id == model.User1Id && x.User2Id == model.User2Id);
+
+                    if (alreadyInDB != null)
+                    {
+                        model.CreationDate = DateTime.UtcNow;
+                        model.LastUpdate = DateTime.UtcNow;
+                        _db.Chat.Add(model);
+                        await _db.SaveChangesAsync();
+                        return StatusCode(StatusCodes.Status200OK);
+                    }
+                    return BadRequest("You already have a chat with this user.");
+                    
                 }
                 return BadRequest("An error has occured while creating a new chat, please try again later");
             }

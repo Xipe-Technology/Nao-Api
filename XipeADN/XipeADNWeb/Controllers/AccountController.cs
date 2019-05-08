@@ -466,6 +466,7 @@ namespace XipeADNWeb.Controllers
                     Chats = Chats.Select(x=>{
                         x.LastMessage =  _db.Message.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
                         x.User2 = _db.Users.FirstOrDefault(y=>y.Id == x.User2Id);
+                        x.User1 = _db.Users.FirstOrDefault(y=>y.Id == x.User1Id);
                         return x;
                     }).ToList();
                     return Ok(Chats);

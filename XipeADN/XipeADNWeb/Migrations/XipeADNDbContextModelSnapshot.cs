@@ -135,8 +135,9 @@ namespace XipeADNWeb.Migrations
 
             modelBuilder.Entity("XipeADNWeb.Entities.Chat", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationDate");
 
@@ -232,12 +233,13 @@ namespace XipeADNWeb.Migrations
 
             modelBuilder.Entity("XipeADNWeb.Entities.Message", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AttachementUrl");
 
-                    b.Property<string>("ChatId");
+                    b.Property<int?>("ChatId");
 
                     b.Property<bool>("IsIncoming");
 

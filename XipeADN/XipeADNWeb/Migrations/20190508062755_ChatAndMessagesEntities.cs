@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace XipeADNWeb.Migrations
@@ -11,9 +12,13 @@ namespace XipeADNWeb.Migrations
                 name: "Chat",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     User1Id = table.Column<string>(nullable: true),
-                    User2Id = table.Column<string>(nullable: true)
+                    User2Id = table.Column<string>(nullable: true),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    LastUpdate = table.Column<DateTime>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,14 +41,15 @@ namespace XipeADNWeb.Migrations
                 name: "Message",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(nullable: true),
                     MessageDateTime = table.Column<DateTime>(nullable: false),
                     IsIncoming = table.Column<bool>(nullable: false),
                     AttachementUrl = table.Column<string>(nullable: true),
                     SenderId = table.Column<string>(nullable: true),
                     ReceiverId = table.Column<string>(nullable: true),
-                    ChatId = table.Column<string>(nullable: true)
+                    ChatId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

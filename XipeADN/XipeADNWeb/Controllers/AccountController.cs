@@ -453,6 +453,31 @@ namespace XipeADNWeb.Controllers
             }
         }
 
+        [HttpGet("GetMyChats")]
+        public async Task<IActionResult> GetMyChats([FromQuery]string UserId)
+        {
+            try
+            {
+                var user = await _db.Users.FirstOrDefaultAsync(x=>x.Id == UserId);
+
+                if (user != null)
+                {
+                    var Chats = await _db.Chat.Where(x=>x.User1.Id == user.Id || x.User2.Id == user.Id).ToListAsync();
+                    Chats = Chats.Select(x=>{
+                        x.LastMessage =  _db.Message.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
+                        x.User2 = _db.Users.FirstOrDefault(y=>y.Id == x.User2Id);
+                        return x;
+                    }).ToList();
+                    return Ok(Chats);
+                }
+                return BadRequest("An error occured while loading your current chats, please try again later.");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         [HttpGet("GetChatsByIds")]
         public async Task<IActionResult> GetChatsByIds(string User1, string User2)
         {

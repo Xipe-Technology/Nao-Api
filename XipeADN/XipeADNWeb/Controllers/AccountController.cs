@@ -478,14 +478,17 @@ namespace XipeADNWeb.Controllers
             try
             {
                 var user = await _db.Users.FirstOrDefaultAsync(x=>x.Id == UserId);
+                var Mensajes = _db.Message;
+                var Usuarios = _db.Users;
 
                 if (user != null)
                 {
                     var Chats = await _db.Chat.Where(x=>x.User1.Id == user.Id || x.User2.Id == user.Id).ToListAsync();
                     Chats = Chats.Select(x=>{
-                        x.LastMessage =  _db.Message.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
-                        x.User2 = _db.Users.FirstOrDefault(y=>y.Id == x.User2Id);
-                        x.User1 = _db.Users.FirstOrDefault(y=>y.Id == x.User1Id);
+                        x.Messages = Mensajes.OrderByDescending(y=>y.MessageDateTime).Where(y=>(y.Chat.User1Id == UserId || y.Chat.User2Id == UserId) && y.ChatId == x.Id).ToList();
+                        x.LastMessage =  Mensajes.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
+                        x.User2 = Usuarios.FirstOrDefault(y=>y.Id == x.User2Id);
+                        x.User1 = Usuarios.FirstOrDefault(y=>y.Id == x.User1Id);
                         return x;
                     }).ToList();
                     return Ok(Chats);
@@ -496,21 +499,6 @@ namespace XipeADNWeb.Controllers
             {
                 throw;
             }
-        }
-
-        [HttpGet("GetChatsByIds")]
-        public async Task<IActionResult> GetChatsByIds(string User1, string User2)
-        {
-            try
-            {
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return Ok();
         }
 
         #endregion

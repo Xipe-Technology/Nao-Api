@@ -89,8 +89,7 @@ namespace XipeADNWeb.Services
                 SecurityStamp = Guid.NewGuid().ToString()
             };
             var res = await _userManager.CreateAsync(entity, model.Password);
-            var roleRes = await _userManager.AddToRoleAsync(entity, "Usuario");
-            return res.Succeeded && roleRes.Succeeded;
+            return res.Succeeded;
         }
 
 

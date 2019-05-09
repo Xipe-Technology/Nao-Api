@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using FirebaseNet.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ namespace XipeADNWeb.Controllers
         private readonly IUserService _userService;
         private readonly XipeADNDbContext _db;
         private readonly UserManager<User> _userManager;
-
+        private string  ServerApiKey = "AAAAN43ncTQ:APA91bEiKe1rDrG7xrICNrt7gSA1lMG7MDim1bPk1SKAvWnRIe7f6Dfm-XRdX85s5EnFNqRhRVfuL0CfVzH9ICEKNGT6PFNhyTb_JJz8lCZpbEH2meDi8QEZvlvjymJ7KS_TA779Rds4";
 
         public AccountController(IUserService userService, XipeADNDbContext db, UserManager<User> userManager)
         {
@@ -42,6 +43,13 @@ namespace XipeADNWeb.Controllers
                     var user = await _userService.AuthenticateAccount(model.Email, model.Password);
                     if (user == null)
                         return NotFound("Correo electrónico o contraseña incorrecta.");
+
+                    var x = await _db.Users.FindAsync(user.Id);     
+
+                    x.FireBaseToken = model.FireBaseToken;
+                    _db.Users.Update(x);
+                    await _db.SaveChangesAsync();
+
                     return Ok(user);
                 }
                 return BadRequest(ModelState);
@@ -501,6 +509,71 @@ namespace XipeADNWeb.Controllers
             }
         }
 
+        [HttpPost("SendMessage")]
+        public async Task<IActionResult> SendMessage([FromBody]Entities.Message sentMessage)
+        {
+            try
+            {
+                if (sentMessage != null)
+                {
+                    _db.Message.Add(sentMessage);
+                    await _db.SaveChangesAsync();
+
+                    var Receiver = await _db.Users.FindAsync(sentMessage.ReceiverId);
+
+                    //Android
+                    await Task.Run(async () => {
+
+                        FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
+
+                        var message = new FirebaseNet.Messaging.Message()
+                        {
+                            To = Receiver.FireBaseToken, //topic example /topics/all
+
+                            Data = new Dictionary<string, string>
+                            {
+                                { "Body", sentMessage.Text },
+                                { "Title", "New Message" },
+                            }
+                        };
+
+                        var result = await client.SendMessageAsync(message);
+                        return result;
+                    });
+
+                    await Task.Run(async () => {
+
+                        FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
+
+                        var message = new FirebaseNet.Messaging.Message()
+                        {
+                            To = Receiver.FireBaseToken, //topic example /topics/all
+                            Notification = new IOSNotification()
+                            {
+                                Body = sentMessage.Text,
+                                Title = "New Message",
+                            }
+                        };
+
+                        var result = await client.SendMessageAsync(message);
+                        return result;
+                    });
+
+                    return Ok();
+                }
+
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+
         #endregion
     }
+
+
+
 }

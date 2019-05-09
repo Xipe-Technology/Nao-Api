@@ -8,5 +8,6 @@ namespace XipeADNWeb.Models
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
+        public string FireBaseToken { get; set; }
     }
 }

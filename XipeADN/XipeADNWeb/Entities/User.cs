@@ -24,6 +24,8 @@ namespace XipeADNWeb.Entities
         //public List<SocialMedia> Social { get; set; }
         //public List<GalleryItem> Gallery { get; set; }
         public string Token { get; set; }
+
+        public string FireBaseToken { get; set; }
         public string TokenExpiration { get; set; }
 
 

@@ -536,7 +536,7 @@ namespace XipeADNWeb.Controllers
                                 { "Body", sentMessage.Text },
                                 { "Title", "New Message" },
                                 { "SenderId", sentMessage.SenderId },
-                                {"Sender", Sender?.ProfilePicUrl}
+                                {"SenderPicture", Sender?.ProfilePicUrl}
                             }
                         };
 

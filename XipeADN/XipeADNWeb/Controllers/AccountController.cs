@@ -534,11 +534,12 @@ namespace XipeADNWeb.Controllers
                             {
                                 { "Body", sentMessage.Text },
                                 { "Title", "New Message" },
+                                { "SenderId", sentMessage.SenderId },
+                                {"Sender", sentMessage.Sender?.ProfilePicUrl}
                             }
                         };
 
                         var result = await client.SendMessageAsync(message);
-                        return result;
                     });
 
                     await Task.Run(async () => {
@@ -552,11 +553,16 @@ namespace XipeADNWeb.Controllers
                             {
                                 Body = sentMessage.Text,
                                 Title = "New Message",
+                            },
+                            Data = new Dictionary<string, string>
+                            {
+                                { "Body", sentMessage.Text },
+                                { "Title", "New Message" },
+                                { "SenderId", sentMessage.SenderId },
+                                { "SenderPicture", sentMessage.Sender?.ProfilePicUrl}
                             }
                         };
-
                         var result = await client.SendMessageAsync(message);
-                        return result;
                     });
 
                     return Ok();

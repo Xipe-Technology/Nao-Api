@@ -520,6 +520,7 @@ namespace XipeADNWeb.Controllers
                     await _db.SaveChangesAsync();
 
                     var Receiver = await _db.Users.FindAsync(sentMessage.ReceiverId);
+                    var Sender = await _db.Users.FindAsync(sentMessage.SenderId);
 
                     //Android
                     await Task.Run(async () => {
@@ -535,7 +536,7 @@ namespace XipeADNWeb.Controllers
                                 { "Body", sentMessage.Text },
                                 { "Title", "New Message" },
                                 { "SenderId", sentMessage.SenderId },
-                                {"Sender", sentMessage.Sender?.ProfilePicUrl}
+                                {"Sender", Sender?.ProfilePicUrl}
                             }
                         };
 
@@ -559,7 +560,7 @@ namespace XipeADNWeb.Controllers
                                 { "Body", sentMessage.Text },
                                 { "Title", "New Message" },
                                 { "SenderId", sentMessage.SenderId },
-                                { "SenderPicture", sentMessage.Sender?.ProfilePicUrl}
+                                { "SenderPicture", Sender?.ProfilePicUrl}
                             }
                         };
                         var result = await client.SendMessageAsync(message);

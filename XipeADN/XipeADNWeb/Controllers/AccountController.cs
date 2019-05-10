@@ -354,7 +354,11 @@ namespace XipeADNWeb.Controllers
                     if (Sender != null && opp != null)
                     {
                         _db.Matches.Add(model);
+                        opp.User.Naos += 50;
+
                         await _db.SaveChangesAsync();
+
+
 
                         //Android
                         // await Task.Run(async () => {
@@ -446,7 +450,7 @@ namespace XipeADNWeb.Controllers
                       new User
                       {
                           Name = x.Name,
-                          Naos = x.Naos ?? "0",
+                          Naos = x.Naos,
                           ProfilePicUrl = x.ProfilePicUrl,
 
                       }

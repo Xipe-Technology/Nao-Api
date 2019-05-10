@@ -20,7 +20,7 @@ namespace XipeADNWeb.Entities
         public string LinkedIn { get; set; }
         public string Twitter { get; set; }
         public string About { get; set; }
-        public string Naos { get; set; }
+        public int Naos { get; set; }
         //public List<SocialMedia> Social { get; set; }
         //public List<GalleryItem> Gallery { get; set; }
         public string Token { get; set; }

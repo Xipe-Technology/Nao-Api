@@ -20,7 +20,7 @@ namespace XipeADNWeb.Models
         public string LinkedIn { get; set; }
         public string Twitter { get; set; }
         public string About { get; set; }
-        public string Naos { get; set; }
+        public int Naos { get; set; }
         public string Rank { get; set; }
         public int? Opportunities { get; set; }
         public int? Matches { get; set; }

@@ -347,13 +347,43 @@ namespace XipeADNWeb.Controllers
                     model.CreationDate = DateTime.Now;
                     model.LastUpdate = DateTime.Now;
 
-                    var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
-                    var opp = await _db.Opportunities.FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
+                    var Sender = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
+                    var opp = await _db.Opportunities.Include(x=>x.KPIs).Include(u=>u.User).FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
+                    var Receiver = await _db.Users.FindAsync(opp.User.Id);
 
-                    if (user != null && opp != null)
+                    if (Sender != null && opp != null)
                     {
                         _db.Matches.Add(model);
                         await _db.SaveChangesAsync();
+
+
+                        FCMClient client = new FCMClient(ServerApiKey);
+                        var message = new FirebaseNet.Messaging.Message()
+                        {
+                            To = Receiver.FireBaseToken ?? "/topics/general",
+                            Notification = new AndroidNotification()
+                            {
+                                Body = "The user " + Sender.Name + " has sent you a match.",
+                                Title = "New Match!",
+                                Icon = "myIcon"
+                            }
+                        };
+                        var result = await client.SendMessageAsync(message);
+
+
+                        await Task.Run(async () => {
+
+                            message = new FirebaseNet.Messaging.Message()
+                            {
+                                To = Receiver.FireBaseToken ?? "/topics/general", //topic example /topics/all
+                                Notification = new IOSNotification()
+                                {
+                                    Body = "The user " + Sender.Name + "has sent you a match.",
+                                    Title = "New Match!",
+                                },
+                            };
+                            result = await client.SendMessageAsync(message);
+                        });
 
                         return StatusCode(StatusCodes.Status200OK);
                     }

@@ -202,7 +202,7 @@ namespace XipeADNWeb.Controllers
 
                 if (user != null)
                 {
-                    user.Naos = user.Naos + 100;
+                    user.Naos = user.Naos + 50;
 
                     _db.Opportunities.Add(model);
                     _db.Entry(user).State = EntityState.Modified;
@@ -355,26 +355,28 @@ namespace XipeADNWeb.Controllers
                     {
                         _db.Matches.Add(model);
                         opp.User.Naos += 50;
+                        _db.Entry(opp).State = EntityState.Modified;
 
                         await _db.SaveChangesAsync();
 
 
 
-                        //Android
-                        // await Task.Run(async () => {
-                        //     FCMClient client = new FCMClient(ServerApiKey);
-                        //     var message = new FirebaseNet.Messaging.Message()
-                        //     {
-                        //         To = Receiver.FireBaseToken,
-                        //         Notification = new AndroidNotification()
-                        //         {
-                        //             Body = "The user " + Sender.Name + " sent you a match.",
-                        //             Title = opp.Title + " Match!!",
-                        //             Icon = "myIcon"
-                        //         }
-                        //     };
-                        //     var result = await client.SendMessageAsync(message);
-                        // });
+                        //Android Notification
+                            // await Task.Run(async () => {
+                            //     FCMClient client = new FCMClient(ServerApiKey);
+                            //     var message = new FirebaseNet.Messaging.Message()
+                            //     {
+                            //         To = Receiver.FireBaseToken,
+                            //         Notification = new AndroidNotification()
+                            //         {
+                            //             Body = "The user " + Sender.Name + " sent you a match.",
+                            //             Title = opp.Title + " Match!!",
+                            //             Icon = "myIcon"
+                            //         }
+                            //     };
+                            //     var result = await client.SendMessageAsync(message);
+                            //  });
+                        //
 
                         await Task.Run(async () => {
                             FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/

@@ -354,12 +354,11 @@ namespace XipeADNWeb.Controllers
                     if (Sender != null && opp != null)
                     {
                         _db.Matches.Add(model);
-                        opp.User.Naos += 100;
-                        _db.Entry(opp).State = EntityState.Modified;
-
+                        Sender.Naos += 100;
+                        Receiver.Naos += 100;
+                        _db.Entry(Sender).State = EntityState.Modified;
+                        _db.Entry(Receiver).State = EntityState.Modified;
                         await _db.SaveChangesAsync();
-
-
 
                         //Android Notification
                             // await Task.Run(async () => {
@@ -399,6 +398,76 @@ namespace XipeADNWeb.Controllers
                 else
                 {
                     return BadRequest("You’ve already sent a match to this opportunity and user.");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpPost("MatchBack")]
+        public async Task<IActionResult> MatchBack([FromBody]Match model )
+        {
+            try
+            {
+                if (_db.Matches.Where(x => x.OpportunityId == model.OpportunityId && x.UserId == model.UserId).Count() == 1)
+                {
+                    model.CreationDate = DateTime.Now;
+                    model.LastUpdate = DateTime.Now;
+
+                    var Receiver = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
+                    var opp = await _db.Opportunities.Include(x=>x.KPIs).Include(u=>u.User).FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
+                    var Sender = await _db.Users.FindAsync(opp.User.Id);
+
+                    if (Sender != null && opp != null && Receiver != null)
+                    {
+                        _db.Matches.Add(model);
+                        Sender.Naos += 150;
+                        Receiver.Naos += 150;
+                        _db.Entry(Sender).State = EntityState.Modified;
+                        _db.Entry(Receiver).State = EntityState.Modified;
+                        await _db.SaveChangesAsync();
+
+                        //Android Notification
+                            // await Task.Run(async () => {
+                            //     FCMClient client = new FCMClient(ServerApiKey);
+                            //     var message = new FirebaseNet.Messaging.Message()
+                            //     {
+                            //         To = Receiver.FireBaseToken,
+                            //         Notification = new AndroidNotification()
+                            //         {
+                            //             Body = "The user " + Sender.Name + " sent you a match.",
+                            //             Title = opp.Title + " Match!!",
+                            //             Icon = "myIcon"
+                            //         }
+                            //     };
+                            //     var result = await client.SendMessageAsync(message);
+                            //  });
+                        //
+
+                        await Task.Run(async () => {
+                            FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
+                            var message = new FirebaseNet.Messaging.Message()
+                            {
+                                To = Receiver.FireBaseToken, //topic example /topics/all
+                                Notification = new IOSNotification()
+                                {
+                                    Body = "The user " + Sender.Name + " matched you back.",
+                                    Title = opp.Title + " Matched back!",
+                                },
+                            };
+                            var result = await client.SendMessageAsync(message);
+                        });
+
+                        return StatusCode(StatusCodes.Status200OK);
+                    }
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    return BadRequest("You already matched back this opportunity and user.");
                 }
                 
             }

@@ -423,6 +423,7 @@ namespace XipeADNWeb.Controllers
 
                     if (Sender != null && opp != null && Receiver != null)
                     {
+                        model.Status = Status.Matched;
                         _db.Matches.Add(model);
                         Sender.Naos += 150;
                         Receiver.Naos += 150;

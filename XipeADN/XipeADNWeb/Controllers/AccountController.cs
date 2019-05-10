@@ -685,8 +685,19 @@ namespace XipeADNWeb.Controllers
 
 
         #endregion
+
+        [HttpGet("GetNaos")]
+        public async Task<IActionResult> GetNaos([FromQuery]string UserId)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+            if (user != null)
+            {
+                return Ok(user.Naos);
+            }
+            else
+            {
+                return BadRequest("We couldn't load the " + user.Name + " naos, please try again later.");
+            }
+        }
     }
-
-
-
 }

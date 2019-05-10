@@ -19,5 +19,13 @@ namespace XipeADNWeb.Entities
         public DateTime LastUpdate { get; set; }
         public bool IsDeleted { get; set; }
 
+        public Status Status { get; set; }
+
+    }
+
+    public enum Status : Int32
+    {
+        Pending,
+        Matched
     }
 }

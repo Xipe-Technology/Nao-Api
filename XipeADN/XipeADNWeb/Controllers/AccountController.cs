@@ -46,7 +46,7 @@ namespace XipeADNWeb.Controllers
 
                     var x = await _db.Users.FindAsync(user.Id);     
 
-                    x.FireBaseToken = model.FireBaseToken;
+                    x.FireBaseToken = model.FireBaseToken ?? x.FireBaseToken;
                     _db.Users.Update(x);
                     await _db.SaveChangesAsync();
 
@@ -356,33 +356,34 @@ namespace XipeADNWeb.Controllers
                         _db.Matches.Add(model);
                         await _db.SaveChangesAsync();
 
-
-                        FCMClient client = new FCMClient(ServerApiKey);
-                        var message = new FirebaseNet.Messaging.Message()
-                        {
-                            To = Receiver.FireBaseToken ?? "/topics/general",
-                            Notification = new AndroidNotification()
-                            {
-                                Body = "The user " + Sender.Name + " has sent you a match.",
-                                Title = "New Match!",
-                                Icon = "myIcon"
-                            }
-                        };
-                        var result = await client.SendMessageAsync(message);
-
+                        //Android
+                        // await Task.Run(async () => {
+                        //     FCMClient client = new FCMClient(ServerApiKey);
+                        //     var message = new FirebaseNet.Messaging.Message()
+                        //     {
+                        //         To = Receiver.FireBaseToken,
+                        //         Notification = new AndroidNotification()
+                        //         {
+                        //             Body = "The user " + Sender.Name + " sent you a match.",
+                        //             Title = opp.Title + " Match!!",
+                        //             Icon = "myIcon"
+                        //         }
+                        //     };
+                        //     var result = await client.SendMessageAsync(message);
+                        // });
 
                         await Task.Run(async () => {
-
-                            message = new FirebaseNet.Messaging.Message()
+                            FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
+                            var message = new FirebaseNet.Messaging.Message()
                             {
-                                To = Receiver.FireBaseToken ?? "/topics/general", //topic example /topics/all
+                                To = Receiver.FireBaseToken, //topic example /topics/all
                                 Notification = new IOSNotification()
                                 {
-                                    Body = "The user " + Sender.Name + "has sent you a match.",
-                                    Title = "New Match!",
+                                    Body = "The user " + Sender.Name + " sent you a match.",
+                                    Title = opp.Title + " Match!!",
                                 },
                             };
-                            result = await client.SendMessageAsync(message);
+                            var result = await client.SendMessageAsync(message);
                         });
 
                         return StatusCode(StatusCodes.Status200OK);

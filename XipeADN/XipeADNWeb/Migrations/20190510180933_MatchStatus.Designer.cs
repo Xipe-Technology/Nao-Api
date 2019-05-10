@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XipeADNWeb.Data;
 
 namespace XipeADNWeb.Migrations
 {
     [DbContext(typeof(XipeADNDbContext))]
-    partial class XipeADNDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190510180933_MatchStatus")]
+    partial class MatchStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -134,9 +134,6 @@ namespace XipeADNWeb.Services
             entity.LinkedIn = model.LinkedIn ?? entity.LinkedIn;
             entity.Twitter = model.Twitter ?? entity.Twitter;
             entity.LastUpdate = DateTime.UtcNow;
-            // entity.Email = model.Email;
-            // entity.Name = model.Name ?? entity.Name;
-            // entity.CompanyRole = model.CompanyRole ?? entity.CompanyRole;
             entity.ProfilePicUrl = model.ProfilePicUrl ?? entity.ProfilePicUrl;
             var res = await _userManager.UpdateAsync(entity);
             return res.Succeeded;

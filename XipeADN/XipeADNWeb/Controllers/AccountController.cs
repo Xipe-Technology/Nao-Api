@@ -354,7 +354,7 @@ namespace XipeADNWeb.Controllers
                     if (Sender != null && opp != null)
                     {
                         _db.Matches.Add(model);
-                        opp.User.Naos += 50;
+                        opp.User.Naos += 100;
                         _db.Entry(opp).State = EntityState.Modified;
 
                         await _db.SaveChangesAsync();

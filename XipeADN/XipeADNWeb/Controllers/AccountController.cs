@@ -414,21 +414,27 @@ namespace XipeADNWeb.Controllers
             {
                 if (_db.Matches.Where(x => x.OpportunityId == model.OpportunityId && x.UserId == model.UserId).Count() == 1)
                 {
-                    model.CreationDate = DateTime.Now;
-                    model.LastUpdate = DateTime.Now;
 
                     var Receiver = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
                     var opp = await _db.Opportunities.Include(x=>x.KPIs).Include(u=>u.User).FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
                     var Sender = await _db.Users.FindAsync(opp.User.Id);
 
+                    var Match = await _db.Matches.FindAsync(model.Id);
+
                     if (Sender != null && opp != null && Receiver != null)
                     {
-                        model.Status = Status.Matched;
-                        _db.Matches.Add(model);
+                        Match.LastUpdate = DateTime.Now;
+                        Match.Status = Status.Matched;
+                        _db.Matches.Update(Match);
+
+
                         Sender.Naos += 150;
                         Receiver.Naos += 150;
+
                         _db.Entry(Sender).State = EntityState.Modified;
                         _db.Entry(Receiver).State = EntityState.Modified;
+
+
                         await _db.SaveChangesAsync();
 
                         //Android Notification

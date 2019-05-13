@@ -572,7 +572,8 @@ namespace XipeADNWeb.Controllers
 
                 if (model.User1 != null && model.User2 != null)
                 {
-                    var alreadyInDB = await _db.Chat.FirstOrDefaultAsync(x => x.User1Id == model.User1Id && x.User2Id == model.User2Id);
+                    var alreadyInDB = await _db.Chat.FirstOrDefaultAsync(x =>( x.User1Id == model.User1Id && x.User2Id == model.User2Id) ||
+                     (x.User1Id == model.User2Id && x.User2Id == x.User1Id ));
                     //Not in DB so we can create the chat
                     if (alreadyInDB == null)
                     {

@@ -636,25 +636,25 @@ namespace XipeADNWeb.Controllers
                     var Sender = await _db.Users.FindAsync(sentMessage.SenderId);
 
                     //Android
-                    await Task.Run(async () => {
+                    // await Task.Run(async () => {
 
-                        FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
+                    //     FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
 
-                        var message = new FirebaseNet.Messaging.Message()
-                        {
-                            To = Receiver.FireBaseToken, //topic example /topics/all
+                    //     var message = new FirebaseNet.Messaging.Message()
+                    //     {
+                    //         To = Receiver.FireBaseToken, //topic example /topics/all
 
-                            Data = new Dictionary<string, string>
-                            {
-                                { "Body", sentMessage.Text },
-                                { "Title", "New Message" },
-                                { "SenderId", sentMessage.SenderId },
-                                {"SenderPicture", Sender?.ProfilePicUrl}
-                            }
-                        };
+                    //         Data = new Dictionary<string, string>
+                    //         {
+                    //             { "Body", sentMessage.Text },
+                    //             { "Title", "New Message" },
+                    //             { "SenderId", sentMessage.SenderId },
+                    //             {"SenderPicture", Sender?.ProfilePicUrl}
+                    //         }
+                    //     };
 
-                        var result = await client.SendMessageAsync(message);
-                    });
+                    //     var result = await client.SendMessageAsync(message);
+                    // });
 
                     await Task.Run(async () => {
 

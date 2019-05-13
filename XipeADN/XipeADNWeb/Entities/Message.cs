@@ -9,6 +9,7 @@ namespace XipeADNWeb.Entities
         public int Id { get; set; }
         public string Text { get; set; }
         public DateTime MessageDateTime { get; set; }
+        public DateTime MessageDateTime2 { get; set; }
         public bool IsIncoming { get; set; }
         public string AttachementUrl { get; set; }
 

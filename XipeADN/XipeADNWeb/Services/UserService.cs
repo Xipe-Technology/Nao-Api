@@ -136,7 +136,7 @@ namespace XipeADNWeb.Services
             entity.LinkedIn = model.LinkedIn ?? entity.LinkedIn;
             entity.Twitter = model.Twitter ?? entity.Twitter;
             entity.LastUpdate = DateTime.UtcNow;
-            entity.ProfilePicUrl = model.ProfilePicUrl ?? entity.ProfilePicUrl;
+            entity.ProfilePicUrl = string.IsNullOrEmpty(model.ProfilePicUrl).ToString() ?? entity.ProfilePicUrl;
             var res = await _userManager.UpdateAsync(entity);
             return res.Succeeded;
         }

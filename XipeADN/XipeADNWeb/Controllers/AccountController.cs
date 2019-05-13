@@ -580,9 +580,9 @@ namespace XipeADNWeb.Controllers
                         model.LastUpdate = DateTime.UtcNow;
                         _db.Chat.Add(model);
                         await _db.SaveChangesAsync();
-                        return StatusCode(StatusCodes.Status200OK);
+                        return Ok(model);
                     }
-                    return BadRequest("You already have a chat with this user.");
+                    return Ok(alreadyInDB);
                     
                 }
                 return BadRequest("An error has occured while creating a new chat, please try again later");

@@ -130,6 +130,7 @@ namespace XipeADNWeb.Services
             entity.Job = model.Job ?? entity.Job;
             entity.CountryCode = model.CountryCode ?? entity.CountryCode;
             entity.PhoneNumber = model.PhoneNumber ?? entity.PhoneNumber;
+            entity.Location = model.Location ?? entity.Location;
             entity.About = model.About ?? entity.About;
             entity.LinkedIn = model.LinkedIn ?? entity.LinkedIn;
             entity.Twitter = model.Twitter ?? entity.Twitter;

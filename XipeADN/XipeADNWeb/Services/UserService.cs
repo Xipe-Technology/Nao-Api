@@ -129,6 +129,7 @@ namespace XipeADNWeb.Services
             entity.Company = model.Company ?? entity.Company;
             entity.Job = model.Job ?? entity.Job;
             entity.CountryCode = model.CountryCode ?? entity.CountryCode;
+            entity.CallNumber = model.CallNumber ?? entity.CallNumber;
             entity.PhoneNumber = model.PhoneNumber ?? entity.PhoneNumber;
             entity.Location = model.Location ?? entity.Location;
             entity.About = model.About ?? entity.About;

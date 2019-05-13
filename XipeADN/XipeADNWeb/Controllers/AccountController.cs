@@ -583,6 +583,7 @@ namespace XipeADNWeb.Controllers
                         await _db.SaveChangesAsync();
                         return Ok(model);
                     }
+                    alreadyInDB.Messages = _db.Message.OrderByDescending(y=>y.MessageDateTime).Where(y=>(y.Chat.User1Id == alreadyInDB.User1Id || y.Chat.User2Id == alreadyInDB.User2Id) && y.ChatId == alreadyInDB.Id).ToList();
                     return Ok(alreadyInDB);
                     
                 }

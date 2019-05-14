@@ -443,7 +443,7 @@ namespace XipeADNWeb.Controllers
         [HttpGet("GetSentMatches")]
         public async Task<IActionResult> GetSentMatches([FromQuery]string UserId)
         {
-            var sentMatches = await _db.Matches.Where(x => x.UserId == UserId).ToListAsync();
+            var sentMatches = await _db.Matches.Where(x => x.UserId == UserId && x.Status == Status.Pending).ToListAsync();
             List<Match> newList = new List<Match>();
 
             foreach (var item in sentMatches)
@@ -468,7 +468,7 @@ namespace XipeADNWeb.Controllers
             {
                 myMatches.AddRange(_db.Matches.Include(u => u.User).Where(x => !x.IsDeleted && x.OpportunityId == item.Id).ToList());
             }
-            var Matches = _db.Matches.Where(x=>x.Status == Status.Matched && x.UserId == UserId1);
+            var Matches = _db.Matches.Where(x=>x.Status == Status.Matched && x.UserId == UserId1).Include(u=>u.User).Include(o=>o.Opportunity);
             myMatches.AddRange(Matches);
             return Ok(myMatches);
         }

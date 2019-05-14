@@ -668,7 +668,7 @@ namespace XipeADNWeb.Controllers
                             Notification = new IOSNotification()
                             {
                                 Body = sentMessage.Text,
-                                Title = "New Message",
+                                Title = Sender.Name + " sent you a message",
                             },
                             Data = new Dictionary<string, string>
                             {

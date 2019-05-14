@@ -98,11 +98,7 @@ namespace XipeADNWeb.Controllers
                     return Ok();
                 }
                 else
-                {
                     return BadRequest();
-                }
-
-
             }
             return BadRequest();
         }
@@ -117,18 +113,12 @@ namespace XipeADNWeb.Controllers
                 {
                     var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
                     if (result.Succeeded)
-                    {
                         return Ok();
-                    }
                     else
-                    {
                         return BadRequest("Invalid Credentials, please verify and try again.");
-                    }
                 }
                 else
-                {
                     return BadRequest();
-                }
             }
             return BadRequest(ModelState);
         }
@@ -197,7 +187,6 @@ namespace XipeADNWeb.Controllers
                 model.CreationDate = DateTime.Now;
                 model.LastUpdate = DateTime.Now;
 
-                //var id = HttpContext.User.Identity.Name;
                 var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
 
                 if (user != null)
@@ -228,7 +217,6 @@ namespace XipeADNWeb.Controllers
                     var entidad = _db.Opportunities.FirstOrDefault(o => o.Id == model.Id);
                     entidad.IsDeleted = true;
                     entidad.LastUpdate = DateTime.Now;
-
 
                     _db.Entry(entidad).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     await _db.SaveChangesAsync();
@@ -290,11 +278,8 @@ namespace XipeADNWeb.Controllers
                 if (model.Id > 0)
                 {
                     var entidad = _db.Opportunities.Include(f => f.KPIs).FirstOrDefault(o => o.Id == model.Id);
-
                     if (!string.IsNullOrEmpty(model.Picture))
-                    {
                         entidad.Picture = model.Picture;
-                    }
                     entidad.Title = model.Title;
                     entidad.Website = model.Website;
                     entidad.Description = model.Description;
@@ -320,9 +305,7 @@ namespace XipeADNWeb.Controllers
                             item.IsDeleted = false;
                         }
                         else
-                        {
                             continue;
-                        }
                     }
                     _db.AddRange(newToAdd.Where(x => x.Id == 0).ToList());
 
@@ -360,23 +343,6 @@ namespace XipeADNWeb.Controllers
                         _db.Entry(Receiver).State = EntityState.Modified;
                         await _db.SaveChangesAsync();
 
-                        //Android Notification
-                            // await Task.Run(async () => {
-                            //     FCMClient client = new FCMClient(ServerApiKey);
-                            //     var message = new FirebaseNet.Messaging.Message()
-                            //     {
-                            //         To = Receiver.FireBaseToken,
-                            //         Notification = new AndroidNotification()
-                            //         {
-                            //             Body = "The user " + Sender.Name + " sent you a match.",
-                            //             Title = opp.Title + " Match!!",
-                            //             Icon = "myIcon"
-                            //         }
-                            //     };
-                            //     var result = await client.SendMessageAsync(message);
-                            //  });
-                        //
-
                         await Task.Run(async () => {
                             FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
                             var message = new FirebaseNet.Messaging.Message()
@@ -396,9 +362,7 @@ namespace XipeADNWeb.Controllers
                     return BadRequest(ModelState);
                 }
                 else
-                {
                     return BadRequest("You’ve already sent a match to this opportunity and user.");
-                }
                 
             }
             catch (Exception ex)
@@ -420,7 +384,6 @@ namespace XipeADNWeb.Controllers
                     var Sender = await _db.Users.FindAsync(opp.User.Id);
 
                     var Match = await _db.Matches.FindAsync(model.Id);
-
                     if (Sender != null && opp != null && Receiver != null)
                     {
                         Match.LastUpdate = DateTime.Now;
@@ -437,23 +400,6 @@ namespace XipeADNWeb.Controllers
 
                         await _db.SaveChangesAsync();
 
-                        //Android Notification
-                            // await Task.Run(async () => {
-                            //     FCMClient client = new FCMClient(ServerApiKey);
-                            //     var message = new FirebaseNet.Messaging.Message()
-                            //     {
-                            //         To = Receiver.FireBaseToken,
-                            //         Notification = new AndroidNotification()
-                            //         {
-                            //             Body = "The user " + Sender.Name + " sent you a match.",
-                            //             Title = opp.Title + " Match!!",
-                            //             Icon = "myIcon"
-                            //         }
-                            //     };
-                            //     var result = await client.SendMessageAsync(message);
-                            //  });
-                        //
-
                         await Task.Run(async () => {
                             FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
                             var message = new FirebaseNet.Messaging.Message()
@@ -467,15 +413,12 @@ namespace XipeADNWeb.Controllers
                             };
                             var result = await client.SendMessageAsync(message);
                         });
-
                         return StatusCode(StatusCodes.Status200OK);
                     }
                     return BadRequest(ModelState);
                 }
                 else
-                {
                     return BadRequest("You already matched back this opportunity and user.");
-                }
                 
             }
             catch (Exception ex)
@@ -537,9 +480,7 @@ namespace XipeADNWeb.Controllers
                 var listaordenada = users.OrderByDescending(x => Convert.ToInt64(x.Naos)).ToList();
                 var position = 1;
                 foreach (var item in listaordenada)
-                {
                     item.Rank = position++;
-                }
 
                 return Ok(listaordenada);
             }
@@ -585,7 +526,6 @@ namespace XipeADNWeb.Controllers
                     }
                     alreadyInDB.Messages = _db.Message.OrderByDescending(y=>y.MessageDateTime).Where(y=>(y.Chat.User1Id == alreadyInDB.User1Id || y.Chat.User2Id == alreadyInDB.User2Id) && y.ChatId == alreadyInDB.Id).ToList();
                     return Ok(alreadyInDB);
-                    
                 }
                 return BadRequest("An error has occured while creating a new chat, please try again later");
             }
@@ -637,27 +577,6 @@ namespace XipeADNWeb.Controllers
                     var Receiver = await _db.Users.FindAsync(sentMessage.ReceiverId);
                     var Sender = await _db.Users.FindAsync(sentMessage.SenderId);
 
-                    //Android
-                    // await Task.Run(async () => {
-
-                    //     FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
-
-                    //     var message = new FirebaseNet.Messaging.Message()
-                    //     {
-                    //         To = Receiver.FireBaseToken, //topic example /topics/all
-
-                    //         Data = new Dictionary<string, string>
-                    //         {
-                    //             { "Body", sentMessage.Text },
-                    //             { "Title", "New Message" },
-                    //             { "SenderId", sentMessage.SenderId },
-                    //             {"SenderPicture", Sender?.ProfilePicUrl}
-                    //         }
-                    //     };
-
-                    //     var result = await client.SendMessageAsync(message);
-                    // });
-
                     await Task.Run(async () => {
 
                         FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
@@ -668,7 +587,7 @@ namespace XipeADNWeb.Controllers
                             Notification = new IOSNotification()
                             {
                                 Body = sentMessage.Text,
-                                Title = Sender.Name + " sent you a message",
+                                Title = Sender.Name,
                             },
                             Data = new Dictionary<string, string>
                             {

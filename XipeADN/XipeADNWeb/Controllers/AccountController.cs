@@ -461,14 +461,15 @@ namespace XipeADNWeb.Controllers
         [HttpGet("GetMatches")]
         public async Task<IActionResult> GetMatches([FromQuery]string UserId1)
         {
-            var user1opp = await _db.Opportunities.Include(u=>u.User).Where(x => !x.IsDeleted && x.UserId == UserId1).ToListAsync();
+            var user1opp = await _db.Opportunities.Include(u=>u.User).Where(x => !x.IsDeleted && (x.UserId == UserId1)).ToListAsync();
 
             List<Match> myMatches = new List<Match>();
             foreach (var item in user1opp)
             {
                 myMatches.AddRange(_db.Matches.Include(u => u.User).Where(x => !x.IsDeleted && x.OpportunityId == item.Id).ToList());
             }
-
+            var Matches = _db.Matches.Where(x=>x.Status == Status.Matched && x.UserId == UserId1);
+            myMatches.AddRange(Matches);
             return Ok(myMatches);
         }
         #endregion

@@ -23,7 +23,7 @@ namespace XipeADNWeb.Controllers
         private readonly IUserService _userService;
         private readonly XipeADNDbContext _db;
         private readonly UserManager<User> _userManager;
-        private string  ServerApiKey = "AAAAN43ncTQ:APA91bEiKe1rDrG7xrICNrt7gSA1lMG7MDim1bPk1SKAvWnRIe7f6Dfm-XRdX85s5EnFNqRhRVfuL0CfVzH9ICEKNGT6PFNhyTb_JJz8lCZpbEH2meDi8QEZvlvjymJ7KS_TA779Rds4";
+        private readonly string  ServerApiKey = "AAAAN43ncTQ:APA91bEiKe1rDrG7xrICNrt7gSA1lMG7MDim1bPk1SKAvWnRIe7f6Dfm-XRdX85s5EnFNqRhRVfuL0CfVzH9ICEKNGT6PFNhyTb_JJz8lCZpbEH2meDi8QEZvlvjymJ7KS_TA779Rds4";
 
         public AccountController(IUserService userService, XipeADNDbContext db, UserManager<User> userManager)
         {
@@ -240,13 +240,13 @@ namespace XipeADNWeb.Controllers
                     var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted && (x.Title.Contains(query) || x.Description.Contains(query))).ToListAsync();
                     entities = entities.Select(x => { x.KPIs = x.KPIs.Where(y => !y.IsDeleted).ToList(); return x; }).ToList();
 
-                    return Ok(entities);
+                    return Ok(entities.OrderByDescending(x=>x.CreationDate));
                 }
                 else
                 {
                     var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted).ToListAsync();
                     entities = entities.Select(x => { x.KPIs = x.KPIs.Where(y => !y.IsDeleted).ToList(); return x; }).ToList();
-                    return Ok(entities);
+                    return Ok(entities.OrderByDescending(x=>x.CreationDate));
                 }
             }
             catch (Exception ex)
@@ -262,7 +262,7 @@ namespace XipeADNWeb.Controllers
             {
                 var entities = await _db.Opportunities.Include(f => f.KPIs).Include(p => p.User).Where(x => !x.IsDeleted && x.UserId == UserId).ToListAsync();
                 entities = entities.Select(x => { x.KPIs = x.KPIs.Where(y => !y.IsDeleted).ToList(); return x; }).ToList();
-                return Ok(entities);
+                return Ok(entities.OrderByDescending(x=>x.CreationDate));
             }
             catch (Exception ex)
             {
@@ -554,7 +554,7 @@ namespace XipeADNWeb.Controllers
                         x.User1 = Usuarios.FirstOrDefault(y=>y.Id == x.User1Id);
                         return x;
                     }).ToList();
-                    return Ok(Chats);
+                    return Ok(Chats.OrderByDescending(x=>x.LastMessage.MessageDateTime));
                 }
                 return BadRequest("An error occured while loading your current chats, please try again later.");
             }
@@ -619,13 +619,9 @@ namespace XipeADNWeb.Controllers
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == UserId);
             if (user != null)
-            {
                 return Ok(user.Naos);
-            }
             else
-            {
                 return BadRequest("We couldn't load the " + user.Name + " naos, please try again later.");
-            }
         }
     }
 }

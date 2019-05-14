@@ -214,11 +214,24 @@ namespace XipeADNWeb.Controllers
             {
                 if (model.Id > 0)
                 {
+                    var newList = new List<Match>();
                     var entidad = _db.Opportunities.FirstOrDefault(o => o.Id == model.Id);
                     entidad.IsDeleted = true;
                     entidad.LastUpdate = DateTime.Now;
 
                     _db.Entry(entidad).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                    var Matches = _db.Matches.Where(x=>x.OpportunityId == entidad.Id);
+                    if (Matches != null)
+                    {
+                        foreach (var item in Matches)
+                        {
+                            item.IsDeleted = true;
+                            newList.Add(item);
+                        }
+                        _db.Matches.UpdateRange(newList);
+                    }
+
                     await _db.SaveChangesAsync();
                     return StatusCode(StatusCodes.Status200OK);
                 }

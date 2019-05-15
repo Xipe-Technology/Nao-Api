@@ -513,11 +513,11 @@ namespace XipeADNWeb.Controllers
         {
             try
             {         
+                if (User1Id == User2Id)
+                    return BadRequest("You cannot have a chat with yourself.");
 
                 if (string.IsNullOrEmpty(User1Id) || string.IsNullOrEmpty(User1Id))
-                {
                     return BadRequest("We couldn't find the desired user, please try again later");
-                }
 
                 var model = new Chat();
                 model.User1 = await _db.Users.FirstOrDefaultAsync(x => x.Id == User1Id);
@@ -528,7 +528,7 @@ namespace XipeADNWeb.Controllers
                 if (model.User1 != null && model.User2 != null)
                 {
                     var alreadyInDB = await _db.Chat.FirstOrDefaultAsync(x =>( x.User1Id == model.User1Id && x.User2Id == model.User2Id) ||
-                     (x.User1Id == model.User2Id && x.User2Id == x.User1Id ));
+                     (x.User1Id == model.User2Id && x.User2Id == model.User1Id ));
                     //Not in DB so we can create the chat
                     if (alreadyInDB == null)
                     {

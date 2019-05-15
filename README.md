@@ -1,3 +1,3 @@
-# Xipe ADN
+# Xipe Technology - Nao API
 
-Adelanto de Nomina
+API para la aplicación de NaoGame Marketplace

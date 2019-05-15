@@ -468,7 +468,7 @@ namespace XipeADNWeb.Controllers
             {
                 myMatches.AddRange(_db.Matches.Include(u => u.User).Where(x => !x.IsDeleted && x.OpportunityId == item.Id).ToList());
             }
-            var Matches = _db.Matches.Where(x=>x.Status == Status.Matched && x.UserId == UserId1).Include(u=>u.User).Include(o=>o.Opportunity);
+            var Matches = _db.Matches.Where(x=>x.Status == Status.Matched && x.UserId == UserId1).Include(u=>u.User).Include(o=>o.Opportunity).ThenInclude(u=>u.User);
             myMatches.AddRange(Matches);
             return Ok(myMatches);
         }

@@ -128,7 +128,7 @@ namespace XipeADNWeb.Services
             if (entity == null)
                 return false;
             entity.Name = model.Name ?? entity.Name;
-            entity.Email = model.Email ?? entity.Email;
+            // entity.Email = model.Email ?? entity.Email;
             entity.Company = model.Company ?? entity.Company;
             entity.Job = model.Job ?? entity.Job;
             entity.Location = model.Location ?? entity.Location;

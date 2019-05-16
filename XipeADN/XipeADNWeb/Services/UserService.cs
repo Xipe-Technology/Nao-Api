@@ -124,7 +124,7 @@ namespace XipeADNWeb.Services
         public async Task<Boolean> EditProfile(UserModel model)
         {
             
-            var entity = await _userManager.FindByEmailAsync(model.Email);
+            var entity = await _userManager.FindByIdAsync(model.Id);
             if (entity == null)
                 return false;
             entity.Name = model.Name ?? entity.Name;

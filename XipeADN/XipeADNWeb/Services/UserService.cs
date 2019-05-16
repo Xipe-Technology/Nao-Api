@@ -123,15 +123,18 @@ namespace XipeADNWeb.Services
         #region Profile
         public async Task<Boolean> EditProfile(UserModel model)
         {
+            
             var entity = await _userManager.FindByEmailAsync(model.Email);
             if (entity == null)
                 return false;
+            entity.Name = model.Name ?? entity.Name;
+            entity.Email = model.Email ?? entity.Email;
             entity.Company = model.Company ?? entity.Company;
             entity.Job = model.Job ?? entity.Job;
+            entity.Location = model.Location ?? entity.Location;
             entity.CountryCode = model.CountryCode ?? entity.CountryCode;
             entity.CallNumber = model.CallNumber ?? entity.CallNumber;
             entity.PhoneNumber = model.PhoneNumber ?? entity.PhoneNumber;
-            entity.Location = model.Location ?? entity.Location;
             entity.About = model.About ?? entity.About;
             entity.LinkedIn = model.LinkedIn ?? entity.LinkedIn;
             entity.Twitter = model.Twitter ?? entity.Twitter;

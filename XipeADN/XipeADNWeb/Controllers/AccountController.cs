@@ -90,8 +90,7 @@ namespace XipeADNWeb.Controllers
                     string code = await _userManager.GeneratePasswordResetTokenAsync(user);
                     code = HttpUtility.UrlEncode(code);
 
-                    //var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
-                    var callbackUrl = "google.com";
+                    var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
                     EmailController.SendSimpleMessage(new Models.Message
                     {
                         Destination = model.Email,

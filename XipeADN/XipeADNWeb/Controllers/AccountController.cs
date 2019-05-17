@@ -88,16 +88,15 @@ namespace XipeADNWeb.Controllers
                 if (user != null)
                 {
 
-                    //string code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    //code = HttpUtility.UrlEncode(code);
-                    //var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
-                    //var sender = new EmailsService();
-                    //var ca_correo = "contacto@cruzazul.com";
-                    //sender.SendSimpleMessage(new Models.Email { Destination = ca_correo, Subject = "", Body = "" });
+                    // string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    // code = HttpUtility.UrlEncode(code);
+                    // var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
+                    // var sender = new EmailsService();
+                    // var ca_correo = "contact@naomarketplace.com";
+                    // sender.SendSimpleMessage(new Models.Email { Destination = ca_correo, Subject = "", Body = "" });
 
                     return Ok();
                 }
-                else
                     return BadRequest();
             }
             return BadRequest();
@@ -550,7 +549,7 @@ namespace XipeADNWeb.Controllers
         }
 
         [HttpGet("GetMyChats")]
-        public async Task<IActionResult> GetMyChats([FromQuery]string UserId)
+        public async Task<IActionResult> GetMyChats([FromQuery]string UserId, string query)
         {
             try
             {
@@ -560,15 +559,30 @@ namespace XipeADNWeb.Controllers
 
                 if (user != null)
                 {
-                    var Chats = await _db.Chat.Where(x=>x.User1.Id == user.Id || x.User2.Id == user.Id).ToListAsync();
-                    Chats = Chats.Select(x=>{
+                    if (!string.IsNullOrEmpty(query))
+                    {
+                        var Chats = await _db.Chat.Where(x=>(x.User1.Id == user.Id || x.User2.Id == user.Id) && (x.User1.Name.Contains(query) || x.User2.Name.Contains(query))).ToListAsync();
+                        Chats = Chats.Select(x=>{
                         x.Messages = Mensajes.OrderByDescending(y=>y.MessageDateTime).Where(y=>(y.Chat.User1Id == UserId || y.Chat.User2Id == UserId) && y.ChatId == x.Id).ToList();
                         x.LastMessage =  Mensajes.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
                         x.User2 = Usuarios.FirstOrDefault(y=>y.Id == x.User2Id);
                         x.User1 = Usuarios.FirstOrDefault(y=>y.Id == x.User1Id);
                         return x;
-                    }).ToList();
-                    return Ok(Chats.OrderByDescending(x=>x.LastMessage.MessageDateTime));
+                        }).ToList();
+                        return Ok(Chats.OrderByDescending(x=>x.LastMessage.MessageDateTime));
+                    }
+                    else
+                    {
+                        var Chats = await _db.Chat.Where(x=>x.User1.Id == user.Id || x.User2.Id == user.Id).ToListAsync();
+                        Chats = Chats.Select(x=>{
+                        x.Messages = Mensajes.OrderByDescending(y=>y.MessageDateTime).Where(y=>(y.Chat.User1Id == UserId || y.Chat.User2Id == UserId) && y.ChatId == x.Id).ToList();
+                        x.LastMessage =  Mensajes.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
+                        x.User2 = Usuarios.FirstOrDefault(y=>y.Id == x.User2Id);
+                        x.User1 = Usuarios.FirstOrDefault(y=>y.Id == x.User1Id);
+                        return x;
+                        }).ToList();
+                        return Ok(Chats.OrderByDescending(x=>x.LastMessage.MessageDateTime));
+                    }
                 }
                 return BadRequest("An error occured while loading your current chats, please try again later.");
             }

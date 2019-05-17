@@ -78,7 +78,7 @@ namespace XipeADNWeb.Controllers
             }
         }
 
-
+        #region ForgotPassword
         [AllowAnonymous, HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody]ResetPassword model)
         {
@@ -90,7 +90,7 @@ namespace XipeADNWeb.Controllers
                     string code = await _userManager.GeneratePasswordResetTokenAsync(user);
                     code = HttpUtility.UrlEncode(code);
 
-                    var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
+                    var callbackUrl = $"{Request.Host}/Identity/Account/ResetPassword?code={code}&id={user.Id}";
                     EmailController.SendSimpleMessage(new Models.Message
                     {
                         Destination = model.Email,
@@ -104,6 +104,8 @@ namespace XipeADNWeb.Controllers
             return BadRequest();
         }
 
+
+        #endregion
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody]ChangePassword model)
         {

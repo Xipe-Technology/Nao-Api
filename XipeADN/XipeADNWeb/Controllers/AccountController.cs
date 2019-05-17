@@ -87,14 +87,17 @@ namespace XipeADNWeb.Controllers
                 var user = await _db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
                 if (user != null)
                 {
+                    string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    code = HttpUtility.UrlEncode(code);
 
-                    // string code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    // code = HttpUtility.UrlEncode(code);
-                    // var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
-                    // var sender = new EmailsService();
-                    // var ca_correo = "contact@naomarketplace.com";
-                    // sender.SendSimpleMessage(new Models.Email { Destination = ca_correo, Subject = "", Body = "" });
-
+                    //var callbackUrl = $"{Request.Host}/login/reset?code={code}&id={user.Id}";
+                    var callbackUrl = "google.com";
+                    EmailController.SendSimpleMessage(new Models.Message
+                    {
+                        Destination = model.Email,
+                        Subject = "Reset Password - Nao Marketplace",
+                        Body = "Reset your Nao Marketplace account password in this " + $"<a href='{callbackUrl}'> Link </a>"
+                    });
                     return Ok();
                 }
                     return BadRequest();
@@ -113,8 +116,8 @@ namespace XipeADNWeb.Controllers
                     var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
                     if (result.Succeeded)
                         return Ok();
-                    else
-                        return BadRequest("Invalid Credentials, please verify and try again.");
+
+                    return BadRequest("Invalid Credentials, please verify and try again.");
                 }
                 else
                     return BadRequest();

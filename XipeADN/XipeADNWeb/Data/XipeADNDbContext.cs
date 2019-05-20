@@ -12,7 +12,8 @@ namespace XipeADNWeb.Data
 
         public DbSet<KPI> KPIs { get; set; }
         public DbSet<Opportunity> Opportunities { get; set; }
-        public DbSet<Lead> Leads { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<BlockedUser> BlockedUsers { get; set; }
         public DbSet<Chat> Chat { get; set; }
         public DbSet<Message> Message { get; set; }
         public DbSet<Match> Matches { get; set; }

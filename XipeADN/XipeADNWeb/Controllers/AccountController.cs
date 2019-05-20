@@ -14,6 +14,7 @@ using XipeADNWeb.Data;
 using XipeADNWeb.Entities;
 using XipeADNWeb.Models;
 using XipeADNWeb.Services;
+using System.Runtime.CompilerServices;
 
 namespace XipeADNWeb.Controllers
 {
@@ -337,7 +338,7 @@ namespace XipeADNWeb.Controllers
         }
 
         [HttpPost("SaveMatch")]
-        public async Task<IActionResult> SaveMatch([FromBody]Match model )
+        public async Task<IActionResult> SaveMatch([FromBody]Match model)
         {
             try
             {
@@ -349,6 +350,12 @@ namespace XipeADNWeb.Controllers
                     var Sender = await _db.Users.FirstOrDefaultAsync(x => x.Id == model.UserId);
                     var opp = await _db.Opportunities.Include(x=>x.KPIs).Include(u=>u.User).FirstOrDefaultAsync(x => x.Id == model.OpportunityId);
                     var Receiver = await _db.Users.FindAsync(opp.User.Id);
+
+                    var AmIBlocked = await _db.BlockedUsers.FirstOrDefaultAsync(x => !x.IsDeleted && x.UserId == Receiver.Id && x.BlockedUserId == Sender.Id);
+                    if (AmIBlocked != null)
+                    {
+                        return BadRequest("You cant send a match to " + Receiver.Name + " since you are blocked.");
+                    }
 
                     if (Sender != null && opp != null)
                     {
@@ -522,11 +529,13 @@ namespace XipeADNWeb.Controllers
                 if (string.IsNullOrEmpty(User1Id) || string.IsNullOrEmpty(User1Id))
                     return BadRequest("We couldn't find the desired user, please try again later");
 
-                var model = new Chat();
-                model.User1 = await _db.Users.FirstOrDefaultAsync(x => x.Id == User1Id);
-                model.User1Id = User1Id;
-                model.User2 = await _db.Users.FirstOrDefaultAsync(x => x.Id == User2Id);
-                model.User2Id = User2Id;
+                var model = new Chat
+                {
+                    User1 = await _db.Users.FirstOrDefaultAsync(x => x.Id == User1Id),
+                    User1Id = User1Id,
+                    User2 = await _db.Users.FirstOrDefaultAsync(x => x.Id == User2Id),
+                    User2Id = User2Id
+                };
 
                 if (model.User1 != null && model.User2 != null)
                 {
@@ -560,12 +569,17 @@ namespace XipeADNWeb.Controllers
                 var user = await _db.Users.FirstOrDefaultAsync(x=>x.Id == UserId);
                 var Mensajes = _db.Message;
                 var Usuarios = _db.Users;
+                var BlockedUsers = await _db.BlockedUsers.Where(x=>!x.IsDeleted && x.UserId == user.Id).ToListAsync();
 
                 if (user != null)
                 {
                     if (!string.IsNullOrEmpty(query))
                     {
-                        var Chats = await _db.Chat.Where(x=>(x.User1.Id == user.Id || x.User2.Id == user.Id) && (x.User1.Name.Contains(query) || x.User2.Name.Contains(query))).ToListAsync();
+                        var Chats = await _db.Chat.Where(x=>(x.User1.Id == user.Id || x.User2.Id == user.Id) && 
+
+                        !BlockedUsers.Select(y=>y.BlockedUserId).Contains(x.User1.Id) && !BlockedUsers.Select(y => y.BlockedUserId).Contains(x.User2.Id)
+
+                        && (x.User1.Name.Contains(query) || x.User2.Name.Contains(query))).ToListAsync();
                         Chats = Chats.Select(x=>{
                         x.Messages = Mensajes.OrderByDescending(y=>y.MessageDateTime).Where(y=>(y.Chat.User1Id == UserId || y.Chat.User2Id == UserId) && y.ChatId == x.Id).ToList();
                         x.LastMessage =  Mensajes.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
@@ -577,7 +591,10 @@ namespace XipeADNWeb.Controllers
                     }
                     else
                     {
-                        var Chats = await _db.Chat.Where(x=>x.User1.Id == user.Id || x.User2.Id == user.Id).ToListAsync();
+                        var Chats = await _db.Chat.Where(x=>(x.User1.Id == user.Id || x.User2.Id == user.Id) &&
+
+                        !BlockedUsers.Select(y => y.BlockedUserId).Contains(x.User1.Id) && !BlockedUsers.Select(y => y.BlockedUserId).Contains(x.User2.Id) 
+                        ).ToListAsync();
                         Chats = Chats.Select(x=>{
                         x.Messages = Mensajes.OrderByDescending(y=>y.MessageDateTime).Where(y=>(y.Chat.User1Id == UserId || y.Chat.User2Id == UserId) && y.ChatId == x.Id).ToList();
                         x.LastMessage =  Mensajes.OrderByDescending(y=>y.MessageDateTime).FirstOrDefault(y=>y.ChatId == x.Id);
@@ -601,14 +618,20 @@ namespace XipeADNWeb.Controllers
         {
             try
             {
+
+                var Receiver = await _db.Users.FindAsync(sentMessage.ReceiverId);
+                var Sender = await _db.Users.FindAsync(sentMessage.SenderId);
+
+                var AmIBlocked = await _db.BlockedUsers.FirstOrDefaultAsync(x => !x.IsDeleted && x.UserId == Receiver.Id && x.BlockedUserId == Sender.Id);
+                if (AmIBlocked != null)
+                {
+                    return BadRequest("You cant send a message to " + Receiver.Name + " since you are blocked.");
+                }
+
                 if (sentMessage != null)
                 {
                     _db.Message.Add(sentMessage);
                     await _db.SaveChangesAsync();
-
-                    var Receiver = await _db.Users.FindAsync(sentMessage.ReceiverId);
-                    var Sender = await _db.Users.FindAsync(sentMessage.SenderId);
-
                     await Task.Run(async () => {
 
                         FCMClient client = new FCMClient(ServerApiKey); //as derived from https://console.firebase.google.com/project/
@@ -655,5 +678,64 @@ namespace XipeADNWeb.Controllers
             else
                 return BadRequest("We couldn't load the " + user.Name + " naos, please try again later.");
         }
+
+        #region Reports
+        [HttpPost("FlagOpportunity")]
+        public async Task<IActionResult> FlagOpportunity([FromBody]Report model)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(x=>x.Email == HttpContext.User.Identity.Name);
+            if (model == null || user == null)
+                return BadRequest("An error ocurred while reporting the opportunity, please try again later.");
+
+            try
+            {
+                var newModel = new Report
+                {
+                    Reason = model.Reason,
+                    CreationDate = DateTime.UtcNow,
+                    LastUpdate = DateTime.UtcNow,
+                    UserId = user.Id,
+                    OpportunityId = model.Opportunity.Id
+                };
+
+                await _db.Reports.AddAsync(newModel);
+                await _db.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error ocurred while reporting the opportunity, please try again later.");
+            }
+
+        }
+
+        [HttpPost("BlockUser")]
+        public async Task<IActionResult> BlockUser([FromBody]User blockedUser)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Email == HttpContext.User.Identity.Name);
+            if (user == null)
+                return BadRequest("An error occured while trying to block a user, please try again later");
+
+            try
+            {
+                var newModel = new BlockedUser
+                {
+                    CreationDate = DateTime.UtcNow,
+                    LastUpdate = DateTime.UtcNow,
+                    UserId = user.Id,
+                    BlockedUserId = blockedUser.Id
+                };
+
+                await _db.BlockedUsers.AddAsync(newModel);
+                await _db.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occured while trying to block a user, please try again later");
+            }
+        }
+        #endregion
+
     }
 }

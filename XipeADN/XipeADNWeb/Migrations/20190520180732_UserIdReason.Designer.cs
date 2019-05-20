@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XipeADNWeb.Data;
 
 namespace XipeADNWeb.Migrations
 {
     [DbContext(typeof(XipeADNDbContext))]
-    partial class XipeADNDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190520180732_UserIdReason")]
+    partial class UserIdReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,27 +133,6 @@ namespace XipeADNWeb.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("XipeADNWeb.Entities.BlockedUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("BlockedUserId");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdate");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BlockedUsers");
                 });
 
             modelBuilder.Entity("XipeADNWeb.Entities.Chat", b =>
@@ -305,7 +286,7 @@ namespace XipeADNWeb.Migrations
 
                     b.Property<DateTime>("LastUpdate");
 
-                    b.Property<int>("OpportunityId");
+                    b.Property<int?>("OpportunityId");
 
                     b.Property<string>("Reason");
 
@@ -508,8 +489,7 @@ namespace XipeADNWeb.Migrations
                 {
                     b.HasOne("XipeADNWeb.Entities.Opportunity", "Opportunity")
                         .WithMany()
-                        .HasForeignKey("OpportunityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OpportunityId");
                 });
 #pragma warning restore 612, 618
         }
